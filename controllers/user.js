@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
+const crypt = require("../auth/crypt");
 
 const ctrl = {};
 
@@ -15,14 +16,18 @@ ctrl.getAll = (req, res) => {
     .catch(err => res.send(err));
 };
 
-ctrl.addOne = (req, res) => {
+ctrl.addOne = async (req, res) => {
   const { username, password, email } = req.body;
   const currentDate = Date.now();
   console.log(username, password, email);
+
+  let hashPassword = await crypt.hashPassword(password);
+  console.log("password", hashPassword);
+
   const user = new User({
     username,
-    password,
     email,
+    password: hashPassword,
     admin: false,
     created_at: currentDate,
     updated_at: currentDate,

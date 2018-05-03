@@ -1,29 +1,33 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const mongoose = require('mongoose');
-const {userRouter} = require('./routes');
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+const { userRouter, authRouter } = require("./routes");
+const port = process.env.PORT || 8080;
+require("dotenv").config();
 
-mongoose.connect('mongodb://localhost/jsing')
-    .then(res => console.log('db connected'))
-    .catch(err => console.error('Error', err));
+mongoose
+  .connect("mongodb://localhost/jsing")
+  .then(res => console.log("db connected"))
+  .catch(err => console.error("Error", err));
 
+app.set("jwtSecretKey", process.env.JWT_SECRET);
 
-app.use(express.json());
+app.use(express.json()); // Get json from posts request
+
+app.use(morgan("dev")); // Plugin to log requests to the console
 
 const apiRouter = express.Router();
 
-app.use('/api', apiRouter);
+app.use("/api", apiRouter);
 
-apiRouter.get('/', (req, res) => {
-    res.send('hello back end');
-})
+apiRouter.get("/", (req, res) => res.send("hello back end"));
 
-apiRouter.use('/users', userRouter)
+apiRouter.use("/users", userRouter);
+apiRouter.use("/auth", authRouter);
 
-app.get('*', (req, res) => {
-    res.send('404 error')
-})
+app.get("*", (req, res) => res.send("404 error"));
 
-app.listen(8080, (req, res) => {
-    console.log('Server working on port 8080')
-})
+app.listen(port, (req, res) => {
+  console.log(`Server working on port ${port}`);
+});
