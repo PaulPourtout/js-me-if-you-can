@@ -20,10 +20,8 @@ ctrl.getAll = (req, res) => {
 ctrl.addOne = async (req, res) => {
   const { username, password, email } = req.body;
   const currentDate = Date.now();
-  console.log(username, password, email);
 
   let hashPassword = await crypt.hashPassword(password);
-  console.log("password", hashPassword);
 
   const user = new User({
     username,
@@ -39,9 +37,8 @@ ctrl.addOne = async (req, res) => {
     .save()
     .then(result => res.json({ message: "user in da place !" }))
     .catch(err => {
-      // if (err.code == 11000) res.json({ message: "user already exists" });
-      // else res.send(err);
-      res.send(err);
+      if (err.code == 11000) res.json({ message: "user already exists" });
+      else res.send(err);
     });
 };
 
