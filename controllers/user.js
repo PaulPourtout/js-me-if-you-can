@@ -5,14 +5,14 @@ const ctrl = {};
 
     ctrl.getById = (req, res) => {
         User
-            .findOne({_id: req.params.userId})
+            .findById(req.params.userId)
             .then(result => res.json(result))
             .catch(err => res.send(err))
     }
     
     ctrl.getAll = (req, res) => {
         User
-            .find({})
+            .find()
             .then(result => res.json(result))
             .catch(err => res.send(err))
     }
@@ -55,8 +55,13 @@ const ctrl = {};
     //     })
     // }
 
+    ctrl.addFriend = (req, res) => {
+        
+        User.findByIdAndUpdate(res.params.userId)
+    }
+
     ctrl.deleteOne = (req, res) => {
-        User.findOneAndRemove({_id: req.params.userId})
+        User.findByIdAndRemove(req.params.userId)
         .then(result => res.json({message: 'user deleted'}))
         .catch(err => res.send(err))
     }

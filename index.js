@@ -15,7 +15,7 @@ const apiRouter = express.Router();
 app.use('/api', apiRouter);
 
 apiRouter.get('/', (req, res) => {
-    res.send('hello back end');
+    res.send('API');
 })
 
 apiRouter.use('/users', userRouter)
