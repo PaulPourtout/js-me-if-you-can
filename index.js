@@ -13,7 +13,7 @@ mongoose
   .catch(err => console.error("Error", err));
 
 app.use(express.json()); // Get json from posts request
-// app.use(cors);
+app.use(cors());
 app.use(morgan("dev")); // Plugin to log requests to the console
 
 const apiRouter = express.Router();

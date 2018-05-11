@@ -8,7 +8,6 @@ const tokenUtils = require("./tokenUtils");
 auth.login = (req, res) => {
   User.findOne({ email: req.body.email })
     .then(async user => {
-      console.log("user", user);
       if (!user) {
         res.json({
           success: false,
