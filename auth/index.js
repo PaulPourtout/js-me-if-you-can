@@ -3,12 +3,12 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const crypt = require("./crypt");
 const auth = {};
-const tokenUtils = require('./tokenUtils');
+const tokenUtils = require("./tokenUtils");
 
 auth.login = (req, res) => {
   User.findOne({ email: req.body.email })
     .then(async user => {
-      console.log('user', user)
+      console.log("user", user);
       if (!user) {
         res.json({
           success: false,
@@ -28,9 +28,8 @@ auth.login = (req, res) => {
             email: user.email,
             admin: user.admin
           };
-          
-          let token = tokenUtils.createToken(payload, 60*60*24);
-          
+
+          let token = tokenUtils.createToken(payload, 60 * 60 * 24);
           res.json({
             success: true,
             message: "Logged in !",

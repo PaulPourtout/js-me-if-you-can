@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const cors = require("cors");
 const { userRouter, authRouter } = require("./routes");
 const port = process.env.PORT || 8080;
 require("dotenv").config();
@@ -11,19 +12,17 @@ mongoose
   .then(res => console.log("db connected"))
   .catch(err => console.error("Error", err));
 
-app.set("jwtSecretKey", process.env.JWT_SECRET);
-
 app.use(express.json()); // Get json from posts request
-
+// app.use(cors);
 app.use(morgan("dev")); // Plugin to log requests to the console
 
 const apiRouter = express.Router();
 
 app.use("/api", apiRouter);
 
-apiRouter.get('/', (req, res) => {
-    res.send('API');
-})
+apiRouter.get("/", (req, res) => {
+  res.send("API");
+});
 
 apiRouter.use("/users", userRouter);
 apiRouter.use("/auth", authRouter);
