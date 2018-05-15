@@ -35,9 +35,9 @@ ctrl.addOne = async (req, res) => {
 
   user
     .save()
-    .then(result => res.json({ message: "user in da place !" }))
+    .then(result => res.json({ success: true, message: "Your account is ready" }))
     .catch(err => {
-      if (err.code == 11000) res.json({ message: "user already exists" });
+      if (err.code == 11000) res.json({ success: false, message: "User already exists" });
       else res.send(err);
     });
 };
