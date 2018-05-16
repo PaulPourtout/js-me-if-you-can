@@ -12,16 +12,16 @@ ctrl.getAll = (req, res) => {
 ctrl.addOne = (req, res) => {
     const {
         functionName,
+        parameterName,
         description,
-        baseFunction,
         tests
     } = req.body;
     const currentDate = Date.now();
 
     const kata = new Kata({
         functionName,
+        parameterName,
         description,
-        baseFunction,
         tests,
         created_at: currentDate,
         updated_at: currentDate,
@@ -33,7 +33,12 @@ ctrl.addOne = (req, res) => {
             console.log(err)
             res.json({success: false, message: err})
         })
+}
 
+ctrl.deleteOne = (req, res) => {
+    Kata.findOneAndRemove({ _id: req.body.kataId })
+    .then(result => res.json({ success: true, message: "kata deleted" }))
+    .catch(err => res.send(err));
 }
 
 module.exports = ctrl;

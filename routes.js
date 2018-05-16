@@ -16,5 +16,7 @@ exports.userRouter = express
 exports.kataRouter = express
   .Router()
   .get("/", KataCtrl.getAll)
+  .post("/", KataCtrl.addOne)
+  .delete("/", KataCtrl.deleteOne)
 
 exports.authRouter = express.Router().post("/", Auth.login);

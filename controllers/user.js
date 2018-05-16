@@ -72,8 +72,8 @@ ctrl.addFriend = (req, res) => {
 // }
 
 ctrl.deleteOne = (req, res) => {
-  User.findOneAndRemove({ _id: req.params.userId })
-    .then(result => res.json({ message: "user deleted" }))
+  User.findOneAndRemove({ _id: req.body.userId })
+    .then(result => res.json({ success: true, message: "user deleted" }))
     .catch(err => res.send(err));
 };
 

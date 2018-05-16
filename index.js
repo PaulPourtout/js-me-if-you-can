@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cors = require("cors");
-const { userRouter, authRouter } = require("./routes");
+const { userRouter, authRouter, kataRouter } = require("./routes");
 const port = process.env.PORT || 8080;
 require("dotenv").config();
 
@@ -26,6 +26,7 @@ apiRouter.get("/", (req, res) => {
 
 apiRouter.use("/users", userRouter);
 apiRouter.use("/auth", authRouter);
+apiRouter.use("/katas", kataRouter);
 
 app.get("*", (req, res) => res.send("404 error"));
 
