@@ -4,6 +4,11 @@ const Schema = mongoose.Schema;
 const kataSchema = new Schema({
     functionName: {type: String, required: true},
     parameterName: {type: String, required: true},
+    solutions: [{
+        authorName: {type: String, required: true},
+        authorId: {type: String, required: true},
+        value: {type: String, required: true}
+    }],
     description: {
         title: {type: String, required: true},
         content: {type: String, required: true},

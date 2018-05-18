@@ -14,8 +14,11 @@ exports.userRouter = express
 // .put('/:userId', UserCtrl.updateOne)
 
 exports.kataRouter = express
-  .Router()
+.Router()
+  .post("/solutions/:kataId", KataCtrl.addSolution)
+  .delete("/solutions/:kataId/:solutionId", KataCtrl.removeSolution)
   .get("/", KataCtrl.getAll)
+  .get("/:kataId", KataCtrl.getAll)
   .post("/", KataCtrl.addOne)
   .delete("/", KataCtrl.deleteOne)
 

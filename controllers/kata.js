@@ -9,6 +9,12 @@ ctrl.getAll = (req, res) => {
         .catch(err => res.json({success: false, message: err}))
 }
 
+ctrl.getById = (req, res) => {
+    Kata.findById(req.params.kataId)
+        .then(kata => res.json({success: true, result: kata}))
+        .catch(err => res.json({success: false, message: err}))
+}
+
 ctrl.addOne = (req, res) => {
     const {
         functionName,
@@ -30,9 +36,35 @@ ctrl.addOne = (req, res) => {
     kata.save()
         .then(result => res.json({success: true, message: "New kata was added"}))
         .catch(err => {
-            console.log(err)
             res.json({success: false, message: err})
         })
+}
+
+ctrl.addSolution = (req, res) => {
+    const { solution} = req.body;
+    const date = Date.now();
+    // Kata.findById(req.params.kataId)
+    //     .then(result => res.json({success: true, message: "Solution added"}))
+    //     .catch(err => res.json({success: false, message: err}))
+    Kata.findOneAndUpdate({_id: req.params.kataId},
+        {
+            $push:{solutions: solution},
+            $set:{updated_at: date}
+        })
+        .then(result => res.json({success: true, message: "Solution added"}))
+        .catch(err => res.json({success: false, message: err}))
+
+}
+
+ctrl.removeSolution = (req, res) => {
+    const date = Date.now();
+    Kata.update({_id: req.params.solutionId},
+        {
+            $pull: {solutions: {$elemMatch: {_id: req.params.solutionId}}},
+            $set: {updated_at: date}
+        })
+        .then(result => res.json({success: true, message: result}))
+        .catch(err => res.json({success: false, message: err}))
 }
 
 ctrl.deleteOne = (req, res) => {
