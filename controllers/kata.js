@@ -58,12 +58,12 @@ ctrl.addSolution = (req, res) => {
 
 ctrl.removeSolution = (req, res) => {
     const date = Date.now();
-    Kata.update({_id: req.params.solutionId},
+    Kata.findOneAndUpdate({_id: req.params.kataId},
         {
-            $pull: {solutions: {$elemMatch: {_id: req.params.solutionId}}},
+            $pull: {solutions: {_id: req.params.solutionId}},
             $set: {updated_at: date}
-        })
-        .then(result => res.json({success: true, message: result}))
+        }, {new: true})
+        .then(result => res.json({success: true, message: "Solution was removed of the kata"}))
         .catch(err => res.json({success: false, message: err}))
 }
 

@@ -15,11 +15,11 @@ exports.userRouter = express
 
 exports.kataRouter = express
 .Router()
-  .post("/solutions/:kataId", KataCtrl.addSolution)
-  .delete("/solutions/:kataId/:solutionId", KataCtrl.removeSolution)
-  .get("/", KataCtrl.getAll)
-  .get("/:kataId", KataCtrl.getAll)
-  .post("/", KataCtrl.addOne)
-  .delete("/", KataCtrl.deleteOne)
+.get("/", KataCtrl.getAll)
+.post("/", KataCtrl.addOne)
+.delete("/", KataCtrl.deleteOne)
+.get("/:kataId", KataCtrl.getAll)
+.put("/solutions/:kataId", KataCtrl.addSolution)
+.put("/solutions/:kataId/numb/:solutionId", KataCtrl.removeSolution)
 
 exports.authRouter = express.Router().post("/", Auth.login);
