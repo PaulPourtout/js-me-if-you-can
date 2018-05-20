@@ -53,7 +53,6 @@ ctrl.addSolution = (req, res) => {
         })
         .then(result => res.json({success: true, message: "Solution added"}))
         .catch(err => res.json({success: false, message: err}))
-
 }
 
 ctrl.removeSolution = (req, res) => {

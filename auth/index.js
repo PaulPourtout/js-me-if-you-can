@@ -23,9 +23,10 @@ auth.login = (req, res) => {
           });
         } else {
           const payload = {
+            id: user.id,
             username: user.username,
             email: user.email,
-            admin: user.admin
+            admin: user.admin,
           };
 
           let token = tokenUtils.createToken(payload, 60 * 60 * 24);
