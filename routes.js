@@ -18,8 +18,9 @@ exports.kataRouter = express
 .get("/", KataCtrl.getAll)
 .post("/", KataCtrl.addOne)
 .delete("/", KataCtrl.deleteOne)
-.get("/:kataId", KataCtrl.getAll)
+.get("/:kataId", KataCtrl.getById)
 .put("/solutions/:kataId", KataCtrl.addSolution)
 .put("/solutions/:kataId/numb/:solutionId", KataCtrl.removeSolution)
+.get("/user/:authorId", KataCtrl.findUserKatas)
 
 exports.authRouter = express.Router().post("/", Auth.login);

@@ -10,9 +10,9 @@ ctrl.getAll = (req, res) => {
 }
 
 ctrl.getById = (req, res) => {
-    Kata.findById(req.params.kataId)
+    Kata.findOne({_id: req.params.kataId})
         .then(kata => res.json({success: true, result: kata}))
-        .catch(err => res.json({success: false, message: err}))
+        .catch(err => res.json({success: false, result: err}))
 }
 
 ctrl.addOne = (req, res) => {
@@ -34,9 +34,9 @@ ctrl.addOne = (req, res) => {
     });
 
     kata.save()
-        .then(result => res.json({success: true, message: "New kata was added"}))
+        .then(result => res.json({success: true, result: "New kata was added"}))
         .catch(err => {
-            res.json({success: false, message: err})
+            res.json({success: false, result: err})
         })
 }
 
@@ -44,15 +44,15 @@ ctrl.addSolution = (req, res) => {
     const { solution} = req.body;
     const date = Date.now();
     // Kata.findById(req.params.kataId)
-    //     .then(result => res.json({success: true, message: "Solution added"}))
-    //     .catch(err => res.json({success: false, message: err}))
+    //     .then(result => res.json({success: true, result: "Solution added"}))
+    //     .catch(err => res.json({success: false, result: err}))
     Kata.findOneAndUpdate({_id: req.params.kataId},
         {
             $push:{solutions: solution},
             $set:{updated_at: date}
         })
-        .then(result => res.json({success: true, message: "Solution added"}))
-        .catch(err => res.json({success: false, message: err}))
+        .then(result => res.json({success: true, result: "Solution added"}))
+        .catch(err => res.json({success: false, result: err}))
 }
 
 ctrl.removeSolution = (req, res) => {
@@ -62,14 +62,21 @@ ctrl.removeSolution = (req, res) => {
             $pull: {solutions: {_id: req.params.solutionId}},
             $set: {updated_at: date}
         }, {new: true})
-        .then(result => res.json({success: true, message: "Solution was removed of the kata"}))
-        .catch(err => res.json({success: false, message: err}))
+        .then(result => res.json({success: true, result: "Solution was removed of the kata"}))
+        .catch(err => res.json({success: false, result: err}))
 }
 
 ctrl.deleteOne = (req, res) => {
     Kata.findOneAndRemove({ _id: req.body.kataId })
-    .then(result => res.json({ success: true, message: "kata deleted" }))
+    .then(result => res.json({ success: true, result: "kata deleted" }))
     .catch(err => res.send(err));
+}
+
+ctrl.findUserKatas = (req, res) => {
+    Kata.find({'solutions.authorId': req.params.authorId})
+    .select("_id description.title")
+    .then(result => res.json({success: true, result}))
+    .catch(err => res.json({success: false, result: err}))
 }
 
 module.exports = ctrl;
