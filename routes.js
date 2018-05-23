@@ -11,7 +11,7 @@ exports.userRouter = express
   .post("/", UserCtrl.addOne)
   .post("/:userId/friends/:friendId", tokenUtils.checkToken, UserCtrl.addFriend)
   .delete("/:userId", tokenUtils.checkToken, UserCtrl.deleteOne);
-// .put('/:userId', UserCtrl.updateOne)
+// .put('/:userId', UserCtrl.updateOne) // TODO !!!
 
 exports.kataRouter = express
 .Router()

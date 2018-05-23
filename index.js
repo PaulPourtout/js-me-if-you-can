@@ -33,3 +33,5 @@ app.get("*", (req, res) => res.send("404 error"));
 app.listen(port, (req, res) => {
   console.log(`Server working on port ${port}`);
 });
+
+module.exports = app;
