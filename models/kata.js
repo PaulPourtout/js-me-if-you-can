@@ -7,7 +7,8 @@ const kataSchema = new Schema({
     solutions: [{
         authorName: {type: String, required: true},
         authorId: {type: String, required: true},
-        value: {type: String, required: true}
+        value: {type: String, required: true},
+        score: {type: String}
     }],
     description: {
         title: {type: String, required: true},
@@ -18,10 +19,8 @@ const kataSchema = new Schema({
         arg: String,
         solution: Schema.Types.Mixed,
         assertFunc: String
-    }],
-    created_at: Date,
-    updated_at: Date,
-})
+    }]
+}, {timestamps: true})
 
 const Kata = mongoose.model('Kata', kataSchema);
 
