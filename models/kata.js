@@ -8,7 +8,7 @@ const kataSchema = new Schema({
         authorName: {type: String, required: true},
         authorId: {type: String, required: true},
         value: {type: String, required: true},
-        score: {type: String}
+        timeScore: {type: Number, required: false}
     }],
     description: {
         title: {type: String, required: true},
