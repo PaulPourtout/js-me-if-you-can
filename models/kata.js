@@ -5,8 +5,7 @@ const kataSchema = new Schema({
     functionName: {type: String, required: true},
     parameterName: {type: String, required: true},
     solutions: [{
-        authorName: {type: String, required: true},
-        authorId: {type: String, required: true},
+        authorId: {type: mongoose.Schema.Types.ObjectId, ref: 'User',required: true},
         value: {type: String, required: true},
         timeScore: {type: Number, required: false}
     }],
