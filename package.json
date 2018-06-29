@@ -7,7 +7,10 @@
     "start": "node index.js",
     "dev": "nodemon src/index.js",
     "debug": "node --nolazy --inspect-brk=9229 index.js",
-    "test": "jest src"
+    "test": "jest src",
+    "test-watch": "jest --watch src",
+    "coverage": "jest --collectCoverageFrom=src/**.js --coverage src",
+    "coverage-watch": "jest --collectCoverageFrom=src/**.js --coverage --watch src"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +29,7 @@
     "dotenv": "^5.0.1",
     "eslint": "^4.19.1",
     "jest": "^23.2.0",
-    "prettier-eslint-cli": "^4.7.1"
+    "prettier-eslint-cli": "^4.7.1",
+    "supertest": "^3.1.0"
   }
 }

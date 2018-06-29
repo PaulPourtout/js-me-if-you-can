@@ -1,0 +1,1 @@
+module.exports = (log, port) => log(`Server listening on port ${port.toString()}`);
