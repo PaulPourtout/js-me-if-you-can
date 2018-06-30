@@ -11,7 +11,7 @@ module.exports = {
     if (req.decoded.isAdmin) {
       next();
     } else {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "This route is admin only"
       });
@@ -24,14 +24,14 @@ module.exports = {
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
-          return res.json({ success: false, message: "Failed to authenticate token" });
+          return res.status(401).json({ success: false, message: "Failed to authenticate token" });
         } else {
           req.decoded = decoded;
           next();
         }
       });
     } else {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "No token provided"
       });

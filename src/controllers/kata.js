@@ -12,7 +12,7 @@ const ctrl = {
         Kata.findOne({_id: req.params.kataId})
             .populate('solutions.authorId', '_id username')
             .then(kata => res.json({success: true, result: kata}))
-            .catch(err => res.json({success: false, result: err}))
+            .catch(err => res.status(500).json({success: false, result: err}))
     },
     
     addOne : (req, res) => {
@@ -34,7 +34,7 @@ const ctrl = {
         kata.save()
             .then(result => res.json({success: true, result: "New kata added"}))
             .catch(err => {
-                res.json({success: false, result: err})
+                res.status(500).json({success: false, result: err})
             })
     },
     
@@ -47,7 +47,7 @@ const ctrl = {
                 $push:{solutions: solution}
             })
             .then(result => res.json({success: true, result: "Solution added"}))
-            .catch(err => res.json({success: false, result: err}))
+            .catch(err => res.status(500).json({success: false, result: err}))
     },
     
     removeSolution : (req, res) => {
@@ -57,20 +57,20 @@ const ctrl = {
                 $pull: {solutions: {_id: req.params.solutionId}}
             }, {new: true})
             .then(result => res.json({success: true, result: "Solution was removed from the kata"}))
-            .catch(err => res.json({success: false, result: err}))
+            .catch(err => res.status(500).json({success: false, result: err}))
     },
     
     deleteOne : (req, res) => {
         Kata.findOneAndRemove({ _id: req.params.kataId })
         .then(result => res.json({ success: true, result: "kata deleted" }))
-        .catch(err => res.send(err));
+        .catch(err => res.status(500).send(err));
     },
     
     findUserKatas : (req, res) => {
         Kata.find({'solutions.authorId': req.params.authorId})
         .select("_id description.title")
         .then(result => res.json({success: true, result}))
-        .catch(err => res.json({success: false, result: err}))
+        .catch(err => res.status(500).json({success: false, result: err}))
     }
 };
 

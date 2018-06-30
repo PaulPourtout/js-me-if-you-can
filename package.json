@@ -29,6 +29,7 @@
     "dotenv": "^5.0.1",
     "eslint": "^4.19.1",
     "jest": "^23.2.0",
+    "mockingoose": "^2.10.1",
     "prettier-eslint-cli": "^4.7.1",
     "supertest": "^3.1.0"
   }

@@ -9,17 +9,21 @@ auth.login = (req, res) => {
   User.findOne({ email: req.body.email })
     .then(async user => {
       if (!user) {
-        res.json({
-          success: false,
-          message: "Authentication failed. User not found."
+        res
+          .status(400)
+          .json({
+            success: false,
+            message: "Authentication failed. User not found."
         });
       } else {
         const isRightPassword = await crypt.checkPassword(req.body.password, user.password);
 
         if (!isRightPassword) {
-          res.json({
-            success: false,
-            message: "Authentication failed. Wrong password."
+          res
+            .status(400)
+            .json({
+              success: false,
+              message: "Authentication failed. Wrong password."
           });
         } else {
           const payload = {
@@ -35,11 +39,13 @@ auth.login = (req, res) => {
             message: "Logged in !",
             token
           });
-        }
+        } 
       }
     })
     .catch(err => {
-      res.json({
+      res
+        .status(400)
+        .json({
         success: false,
         message: err
       });
