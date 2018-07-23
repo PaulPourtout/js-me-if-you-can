@@ -1,0 +1,43 @@
+// USER
+{
+    "id": { "type": "string", "required": true},
+    "name": {"type": "string"},
+    "username": { "type": "string", "required": true, "unique": true },
+    "email": { "type": "string", "required": true, "unique": true },
+    "password": { "type": "string", "required": true },
+    "admin": {"type": "boolean"}
+}
+
+// SERIE
+{
+    "id": { "type": "string", "required": true},
+    "title": { "type": "string", "required": true },
+    "description": { "type": "string" },
+    "katas": [{ "type": "string" }],
+    "scores": [{
+        "authorId": "string",
+        "score": "number"
+    }]
+}
+
+// KATA
+{
+    "id": { "type": "string", "required": true},
+    "functionName": { "type": "string", "required": true },
+    "parameterName": { "type": "string", "required": true },
+    "solutions": [{
+        "authorId": { "type": "string", "required": true },
+        "value": { "type": "string", "required": true },
+        "timeScore": { "type": "number", "required": false }
+    }],
+    "description": {
+        "title": { "type": "string", "required": true },
+        "content": { "type": "string", "required": true },
+        "example": { "type": "string", "required": false }
+    },
+    "tests": [{
+        "arg": { "type": "string" },
+        "solution": { "type": "any" },
+        "assertFunc": { "type": "string" }
+    }]
+}
