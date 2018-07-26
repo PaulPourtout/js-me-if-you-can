@@ -38,6 +38,18 @@ const ctrl = {
             })
     },
     
+    updateOne : (req, res) => {
+        const { functionName, parameterName, description, tests } = req.body;
+        const date = Date.now();
+
+        Kata.findOneAndUpdate({_id: req.params.kataId},
+            {
+                $set:{functionName, parameterName, description, tests}
+            })
+            .then(result => res.json({success: true, result: "Kata updated"}))
+            .catch(err => res.status(500).json({success: false, result: err}))
+    },
+
     addSolution : (req, res) => {
         const { solution} = req.body;
         const date = Date.now();

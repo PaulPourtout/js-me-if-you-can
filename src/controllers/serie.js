@@ -5,7 +5,7 @@ const Serie = require("../models/serie");
 const ctrl = {    
     getById : (req, res) => {
         Serie.findById(req.params.serieId)
-        .populate({path: 'katas', select: 'description.title'})
+        .populate({path: 'katas'})
         .then(result => res.json({success: true, result}))
         .catch(err => res.json({success: false, result: err}))
     },

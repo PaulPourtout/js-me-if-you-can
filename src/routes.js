@@ -18,6 +18,7 @@ exports.kataRouter = express
     .Router()
     .get("/", KataCtrl.getAll)
     .post("/", KataCtrl.addOne)
+    .put("/:kataId", KataCtrl.updateOne)
     .delete("/:kataId", KataCtrl.deleteOne)
     .get("/:kataId", KataCtrl.getById)
     .put("/solutions/:kataId", KataCtrl.addSolution)
