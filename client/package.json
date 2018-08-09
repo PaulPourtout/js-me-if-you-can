@@ -4,6 +4,10 @@
   "private": true,
   "proxy": "http://localhost:8080",
   "dependencies": {
+    "@types/jest": "^22.2.0",
+    "@types/node": "^9.4.7",
+    "@types/react": "^16.0.40",
+    "@types/react-dom": "^16.0.5",
     "@types/react-router-dom": "^4.2.6",
     "autoprefixer": "7.1.6",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
@@ -53,10 +57,6 @@
     "deploy": "npm run build && gh-pages -d build"
   },
   "devDependencies": {
-    "@types/jest": "^22.2.0",
-    "@types/node": "^9.4.7",
-    "@types/react": "^16.0.40",
-    "@types/react-dom": "^16.0.5",
     "gh-pages": "^1.1.0",
     "typescript": "^2.7.2"
   },

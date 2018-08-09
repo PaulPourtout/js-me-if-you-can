@@ -11,7 +11,7 @@ yarn-error.log*
 client/coverage
 
 # production
- client/build
+/build
 
 # misc
 .DS_Store
