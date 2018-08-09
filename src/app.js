@@ -18,9 +18,13 @@ app.use(cors());
 app.use(morgan("dev")); // Plugin to log requests to the console
 
 const apiRouter = express.Router();
-
+apiRouter.use("/users", userRouter);
+apiRouter.use("/auth", authRouter);
+apiRouter.use("/katas", kataRouter);
+apiRouter.use("/series", serieRouter);
 
 app.use("/api", apiRouter);
+
 
 apiRouter.get("/", (req, res) => {
     res.send("API"); 
@@ -33,10 +37,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
 });
 
-apiRouter.use("/users", userRouter);
-apiRouter.use("/auth", authRouter);
-apiRouter.use("/katas", kataRouter);
-apiRouter.use("/series", serieRouter);
+
 
 app.get("*", (req, res) => res.status(404).send("404 error"));
 
