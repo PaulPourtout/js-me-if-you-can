@@ -1,0 +1,156 @@
+import * as React from "react";
+import styled from "styled-components";
+import { ColorPalette } from "../style/Palette";
+import { Button } from "../style/StyledComponents";
+import {Services} from "../../utils/services";
+import { UserListener } from "../../context/UserProvider";
+import { IUser } from "../../interfaces/IUser";
+
+interface Props {
+  user: IUser,
+  login: () => void;
+  logout: () => void;
+}
+
+interface State {
+  username: string;
+  email: string;
+  password: string;
+  errorMessage: string;
+  isValidEmail: boolean;
+  isValidPassword: boolean;
+}
+
+
+export class SignupPageComponent extends React.Component<Props, State> {
+  state: State = {
+    username: "",
+    email: "",
+    password: "",
+    errorMessage: "",
+    isValidEmail: false,
+    isValidPassword: false
+  };
+
+  Auth = Services.Auth;
+
+  render() {
+    const inputStyle = {
+      margin: "0.5rem 0",
+      width: "100%",
+      boxShadow: "none",
+      border: `2px solid ${ColorPalette.primary}`,
+      padding: "0.3rem",
+      fontSize: "1.5rem",
+      boxSizing: "border-box"
+    };
+    return (
+      <main
+        style={{
+          backgroundColor: "#F4F4F4",
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          display: "flex"
+        }}
+      >
+        <Form>
+          <label htmlFor="">Username:</label>
+          <input
+            style={inputStyle}
+            type="text"
+            value={this.state.username}
+            name="username"
+            placeholder="Username"
+            onChange={this.handleChangeInput}
+          />
+          <label htmlFor="">Email:</label>
+          <input
+            style={inputStyle}
+            type="text"
+            value={this.state.email}
+            name="email"
+            placeholder="Email"
+            onChange={this.handleChangeInput}
+          />
+          <label htmlFor="">Password:</label>
+          <input
+            style={inputStyle}
+            name="password"
+            type="password"
+            value={this.state.password}
+            placeholder="password"
+            onChange={this.handleChangeInput}
+          />
+          {
+            this.state.errorMessage.length > 2 &&
+            <p>{this.state.errorMessage}</p>
+          }
+          {
+            this.state.isValidEmail &&
+            <p>valid email !!!</p>
+          }
+          {
+            this.state.isValidPassword &&
+            <p>valid password !!!</p>
+          }
+          <Button
+            fullWidth
+            active
+            onClick={e => this.handleSubmitSignup(e, this.state.username, this.state.email, this.state.password)}
+          >
+            Submit
+          </Button>
+        </Form>
+      </main>
+    );
+  }
+
+  handleChangeInput = e => {
+    let isValidEmail = false;
+    let isValidPassword = false;
+    if (e.target.name === 'email') {
+      isValidEmail = this.isValidEmailAddress(e.target.value)
+    }
+    if (e.target.name === 'password') {
+      isValidPassword = this.isValidPassword(e.target.value)
+    }
+    this.setState({
+      [e.target.name]: e.target.value,
+      isValidEmail,
+      isValidPassword
+    } as Pick<State, keyof State>);
+  };
+
+  handleSubmitSignup = (e, username, email, password) => {
+    e.preventDefault();
+
+    this.Auth.submitSignup(username, email, password)
+    .then(res => this.props.login());
+  };
+
+  isValidPassword = (password:string) => {
+    const reg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/ig;
+    return reg.test(password);
+  }
+
+  isValidEmailAddress = (email:string) => {
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/igm;
+    return reg.test(email)
+  }
+}
+
+export const SignupPage = UserListener(SignupPageComponent);
+
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 70%;
+  align-items: center;
+  background-color: #fff;
+  padding: 2rem;
+  box-sizing: border-box;
+  border-radius: 0.1rem;
+`;
