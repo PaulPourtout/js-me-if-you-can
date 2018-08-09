@@ -57,7 +57,6 @@
     "@types/react": "^16.0.40",
     "@types/react-dom": "^16.0.5",
     "gh-pages": "^1.1.0",
-    "fs-extra": "3.0.1",
     "typescript": "^2.7.2"
   },
   "jest": {
