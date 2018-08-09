@@ -85,6 +85,7 @@ export class LoginPageComponent extends React.Component<ILoginPageProps, any> {
 
     this.Auth.submitLogin(email, password)
     .then(res => this.props.login())
+    .catch(err => console.error(err))
   };
 }
 
