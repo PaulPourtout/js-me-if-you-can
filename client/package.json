@@ -2,7 +2,7 @@
   "name": "js-me-if-you-can",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://PaulPourtout.github.io/js-me-if-you-can",
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@types/react-router-dom": "^4.2.6",
     "autoprefixer": "7.1.6",

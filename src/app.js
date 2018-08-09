@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const path = require("path");
 const cors = require("cors");
 const { userRouter, authRouter, kataRouter, serieRouter } = require("./routes");
 require("dotenv").config();
@@ -18,10 +19,18 @@ app.use(morgan("dev")); // Plugin to log requests to the console
 
 const apiRouter = express.Router();
 
+
 app.use("/api", apiRouter);
 
 apiRouter.get("/", (req, res) => {
     res.send("API"); 
+});
+
+// Serve React app
+app.use(express.static(path.join(__dirname, "..", "client", "build")))
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
 });
 
 apiRouter.use("/users", userRouter);
