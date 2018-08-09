@@ -16,6 +16,9 @@ mongoose
 app.use(express.json()); // Get json from posts request
 app.use(cors());
 app.use(morgan("dev")); // Plugin to log requests to the console
+// Serve React app
+app.use(express.static(path.join(__dirname, "..", "client", "build")))
+
 
 const apiRouter = express.Router();
 apiRouter.use("/users", userRouter);
@@ -30,15 +33,8 @@ apiRouter.get("/", (req, res) => {
     res.send("API"); 
 });
 
-// Serve React app
-app.use(express.static(path.join(__dirname, "..", "client", "build")))
-
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
 });
-
-
-
-app.get("*", (req, res) => res.status(404).send("404 error"));
 
 module.exports = app;
