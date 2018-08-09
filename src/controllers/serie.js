@@ -6,7 +6,14 @@ const ctrl = {
     getById : (req, res) => {
         Serie.findById(req.params.serieId)
         .populate({path: 'katas'})
-        .then(result => res.json({success: true, result}))
+        .then(result => {
+            if (result) {
+                return res.json({success: true, result})
+            }
+            else {
+                return res.json({success: false, result: "no serie found"})
+            }
+        })
         .catch(err => res.json({success: false, result: err}))
     },
 		

@@ -14,22 +14,4 @@ const userSchema = new Schema({
 
 const User = mongoose.model("User", userSchema);
 
-const createAdmin = async () => {
-    let hashPassword = await crypt.hashPassword("admin");
-    
-    // TO DO : delete in prod
-    const user = new User({
-        name: "admin",
-        username: "admin",
-        email: "admin@admin.com",
-        password: hashPassword,
-        admin: true,
-        friends: []
-    })
-    
-    return user.save();
-}
-
-// createAdmin();
-
 module.exports = User;

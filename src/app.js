@@ -5,9 +5,10 @@ const cors = require("cors");
 const { userRouter, authRouter, kataRouter, serieRouter } = require("./routes");
 require("dotenv").config();
 const mongoose = require("mongoose");
+const DB = process.env.DB || "mongodb://localhost/jsing";
 
 mongoose
-    .connect("mongodb://localhost/jsing")
+    .connect(DB)
     .then(res => console.log("db connected"))
     .catch(err => console.error("Error", err));
 
