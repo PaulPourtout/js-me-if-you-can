@@ -15,7 +15,10 @@
     "noImplicitAny": false,
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "types": [
+      "node"
+    ]
   },
   "include": [
     "./src"
