@@ -2,7 +2,7 @@
   "name": "js-me-if-you-can",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "https://js-me-api.herokuapp.com",
   "dependencies": {
     "@types/jest": "^22.2.0",
     "@types/node": "^9.4.7",
