@@ -7,20 +7,27 @@ const { userRouter, authRouter, kataRouter, serieRouter } = require("./routes");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const DB = process.env.DB || "mongodb://localhost/jsing";
+const apiRouter = express.Router();
 
+// Connect to database
 mongoose
     .connect(DB)
     .then(res => console.log("db connected"))
     .catch(err => console.error("Error", err));
 
-app.use(express.json()); // Get json from posts request
-app.use(cors());
-app.use(morgan("dev")); // Plugin to log requests to the console
+const corsOptions = {
+    origin: 'https://js-me-api.herokuapp.com',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions));
 // Serve React app
 app.use(express.static(path.join(__dirname, "..", "client", "build")))
 
 
-const apiRouter = express.Router();
+apiRouter.use(express.json()); // Get json from posts request
+apiRouter.use(morgan("dev")); // Plugin to log requests to the console
+
 apiRouter.use("/users", userRouter);
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/katas", kataRouter);

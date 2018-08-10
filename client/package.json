@@ -1,5 +1,5 @@
 {
-  "name": "js-me-if-you-can",
+  "name": "js-me-if-you-can-front",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8080",

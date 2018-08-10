@@ -1,5 +1,5 @@
 {
-  "name": "js-me-if-you-can-api",
+  "name": "js-me-if-you-can",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,6 +10,7 @@
     "start": "node index.js",
     "client": "cd client && npm start",
     "server": "nodemon index.js",
+    "server-web": "npm server",
     "heroku-postbuild": "cd client && npm i && npm run build",
     "debug": "node --nolazy --inspect-brk=9229 index.js",
     "test": "jest src",

@@ -5,8 +5,12 @@ const SerieCtrl = require("./controllers/serie");
 const Auth = require("./auth");
 const tokenUtils = require("./auth/tokenUtils");
 
-exports.userRouter = express
-    .Router()
+const userRouter = express.Router();
+const kataRouter = express.Router();
+const serieRouter = express.Router();
+const authRouter = express.Router();
+
+    userRouter
     .get("/:userId", UserCtrl.getById)
     .get("/", UserCtrl.getAll)
     .post("/", UserCtrl.addOne)
@@ -14,8 +18,7 @@ exports.userRouter = express
     .delete("/:userId", UserCtrl.deleteOne);
 // .put('/:userId', UserCtrl.updateOne) // TODO !!!
 
-exports.kataRouter = express
-    .Router()
+    kataRouter
     .get("/", KataCtrl.getAll)
     .post("/", KataCtrl.addOne)
     .put("/:kataId", KataCtrl.updateOne)
@@ -25,11 +28,12 @@ exports.kataRouter = express
     .put("/solutions/:kataId/numb/:solutionId", KataCtrl.removeSolution)
     .get("/user/:authorId", KataCtrl.findUserKatas);
 
-exports.serieRouter = express
-    .Router()
+    serieRouter
     .get("/", SerieCtrl.getAll)
     .post("/", SerieCtrl.addOne)
     .get("/:serieId", SerieCtrl.getById)
     .delete("/:serieId", SerieCtrl.deleteOne)
 
-exports.authRouter = express.Router().post("/", Auth.login);
+    authRouter.post("/", Auth.login);
+
+    module.exports = {userRouter, kataRouter, serieRouter, authRouter};
