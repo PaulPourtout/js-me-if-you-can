@@ -1,55 +1,42 @@
 const express = require("express");
 const User = require("../models/user");
-const jwt = require("jsonwebtoken");
 const crypt = require("./crypt");
-const auth = {};
 const tokenUtils = require("./tokenUtils");
 
-auth.login = (req, res) => {
-  User.findOne({ email: req.body.email })
-    .then(async user => {
-      if (!user) {
-        res
-          .status(400)
-          .json({
-            success: false,
-            message: "Authentication failed. User not found."
-        });
-      } else {
-        const isRightPassword = await crypt.checkPassword(req.body.password, user.password);
+const auth = {};
+const TOKEN_LONGEVITY = 60 * 60 * 24;
 
-        if (!isRightPassword) {
-          res
-            .status(400)
-            .json({
-              success: false,
-              message: "Authentication failed. Wrong password."
-          });
-        } else {
-          const payload = {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            admin: user.admin,
-          };
+auth.login = (req, res, next) => {
+    User.findOne({ email: req.body.email })
+        .then(async user => {
+            if (!user) {
+                next({status: 404, message: "Authentication failed. User not found."});
+            } else {
+                    const {id, password, username, email, admin} = user;
+                    const isRightPassword = await crypt.checkPassword(req.body.password, password);
 
-          let token = tokenUtils.createToken(payload, 60 * 60 * 24);
-          res.json({
-            success: true,
-            message: "Logged in !",
-            token
-          });
-        } 
-      }
-    })
-    .catch(err => {
-      res
-        .status(400)
-        .json({
-        success: false,
-        message: err
-      });
-    });
+                if (!isRightPassword) {
+                    next({status: 401, message: "Authentication failed. Wrong password."});
+                } else {
+                    const payload = {
+                        id,
+                        username,
+                        email,
+                        admin,
+                    };
+
+                    let token = tokenUtils.createToken(payload, TOKEN_LONGEVITY);
+                    return res.json({
+                        success: true,
+                        message: "Authentication succeeded. Logged in !",
+                        token
+                    });
+                } 
+            }
+        })
+        .catch(err => {
+            next({status: 400, message: "error"})
+        })
 };
 
 module.exports = auth;

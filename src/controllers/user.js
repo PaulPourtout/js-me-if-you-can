@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const crypt = require("../auth/crypt");
+const isEmptyString = require("../utils/stringUtils");
 
 const ctrl = {
 	getById : (req, res) => {
@@ -16,9 +17,15 @@ const ctrl = {
 		.catch(err => res.send(err));
 	},
 
-	addOne : async (req, res) => {
+	addOne : async (req, res, next) => {
 		const { username, password, email } = req.body;
-		const currentDate = Date.now();
+        const currentDate = Date.now();
+        
+        if (isEmptyString(username)
+        || isEmptyString(password)
+        || isEmptyString(email)) {
+            next({status: 412, message: "Failed. Missing field for user creation."})
+        }
 
 		let hashPassword = await crypt.hashPassword(password);
 
@@ -30,14 +37,30 @@ const ctrl = {
 			created_at: currentDate,
 			updated_at: currentDate,
 			friends: []
-		});
+        });
 
 		user
 		.save()
-		.then(result => res.json({ success: true, message: "Your account is ready" }))
+		.then(result => {
+            res.json({
+                success: true,
+                message: "Your account is ready"
+            })
+        })
 		.catch(err => {
-			if (err.code == 11000) res.json({ success: false, message: "User already exists" });
-			else res.send(err);
+			if (err.code === 11000) {
+                let field = err.message.split(".$")[1];
+                field = field.split(" dup key")[0];
+                field = field.substring(0, field.lastIndexOf("_"));
+
+                next({
+                    status: 412,
+                    message: `Failed. An account with this ${field} already exist.`
+                });
+            }
+			else {
+                next({status: 400, message: "error here"})
+            }
 		});
 	},
 

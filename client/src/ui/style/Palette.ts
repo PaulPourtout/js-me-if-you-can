@@ -8,5 +8,6 @@ export const ColorPalette = {
   background: "#FFF",
   underBackground: "#EFEFEF",
   inactiveButton: "#76adcc",
-  activeText: "#212121"
+  activeText: "#212121",
+  lightText: "#505050"
 };

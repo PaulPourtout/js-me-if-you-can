@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const crypt = require("../auth/crypt");
+const isEmptyString = require("../utils/stringUtils");
 
 const userSchema = new Schema({
     name: String,
@@ -10,7 +11,10 @@ const userSchema = new Schema({
     password: { type: String, required: true },
     admin: Boolean,
     friends: Array
-}, {timestamps: true});
+}, {
+    timestamps: true,
+    strict: true
+});
 
 const User = mongoose.model("User", userSchema);
 

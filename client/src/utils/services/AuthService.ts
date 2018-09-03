@@ -1,5 +1,6 @@
 import decode from "jwt-decode";
 import { URL_API } from "../config/URL_API";
+import { IAPIError } from "../../interfaces/IError";
 
 export class AuthService {
 
@@ -13,7 +14,9 @@ export class AuthService {
         .then(async res => {
             this.setToken(res.token)
         })
-        .catch(err => err);
+        .catch(err => {
+            throw err
+        });
     }
 
     submitSignup = (username: string, email: string, password: string) => {
@@ -29,7 +32,9 @@ export class AuthService {
                 return this.submitLogin(email, password)
             }
         })
-        .catch(err => err);
+        .catch(err => {
+            throw err
+        });
     }
 
     removeToken = () => {
@@ -86,6 +91,10 @@ export class AuthService {
         .then(res => {
             if (!res.ok) throw res;
             return res.json()
+        })
+        .catch(async (err) => {
+            const error: IAPIError = await err.json();
+            throw error;
         })
     }
 }

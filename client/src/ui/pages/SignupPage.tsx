@@ -15,10 +15,11 @@ interface Props {
 interface State {
   username: string;
   email: string;
-  password: string;
+  password1: string;
+  password2: string;
   errorMessage: string;
-  isValidEmail: boolean;
   isValidPassword: boolean;
+  isValidPassword2: boolean;
 }
 
 
@@ -26,10 +27,11 @@ export class SignupPageComponent extends React.Component<Props, State> {
   state: State = {
     username: "",
     email: "",
-    password: "",
+    password1: "",
+    password2: "",
     errorMessage: "",
-    isValidEmail: false,
-    isValidPassword: false
+    isValidPassword: false,
+    isValidPassword2: false,
   };
 
   Auth = Services.Auth;
@@ -54,10 +56,11 @@ export class SignupPageComponent extends React.Component<Props, State> {
           display: "flex"
         }}
       >
-        <Form>
+        <Form onSubmit={(e) => this.handleSubmitSignup(e, this.state.username, this.state.email, this.state.password1)}>
           <label htmlFor="">Username:</label>
           <input
-            style={inputStyle}
+            required
+            style={ inputStyle }
             type="text"
             value={this.state.username}
             name="username"
@@ -66,38 +69,46 @@ export class SignupPageComponent extends React.Component<Props, State> {
           />
           <label htmlFor="">Email:</label>
           <input
-            style={inputStyle}
+            required
+            style={ inputStyle }
             type="text"
             value={this.state.email}
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
             name="email"
             placeholder="Email"
             onChange={this.handleChangeInput}
           />
-          <label htmlFor="">Password:</label>
+          <label htmlFor="password1">Password:</label>
           <input
-            style={inputStyle}
-            name="password"
+            required
+            style={{ ...inputStyle, ...this.isCorrectField(this.state.isValidPassword) }}
+            name="password1"
             type="password"
-            value={this.state.password}
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            value={this.state.password1}
             placeholder="password"
             onChange={this.handleChangeInput}
           />
+          <label htmlFor="password2">Repeat password:</label>
+          <input
+            required
+            style={{ ...inputStyle, ...this.isCorrectField(this.state.isValidPassword2) }}
+            name="password2"
+            type="password"
+            value={this.state.password2}
+            placeholder="password"
+            onChange={this.handleChangeInput}
+          />
+          <span style={{ fontSize: "0.9rem", color: ColorPalette.lightText }}>Must contain more than 7 characters, upper and lower letters and numbers</span>
           {
             this.state.errorMessage.length > 2 &&
-            <p>{this.state.errorMessage}</p>
+            <p style={{ color: "red" }}>{this.state.errorMessage}</p>
           }
-          {
-            this.state.isValidEmail &&
-            <p>valid email !!!</p>
-          }
-          {
-            this.state.isValidPassword &&
-            <p>valid password !!!</p>
-          }
+
           <Button
             fullWidth
             active
-            onClick={e => this.handleSubmitSignup(e, this.state.username, this.state.email, this.state.password)}
+            style={{ marginTop: "2rem" }}
           >
             Submit
           </Button>
@@ -106,19 +117,25 @@ export class SignupPageComponent extends React.Component<Props, State> {
     );
   }
 
+  isCorrectField = (correctField: boolean) => {
+    return { borderColor: correctField ? 'green' : 'red' }
+  }
+
   handleChangeInput = e => {
-    let isValidEmail = false;
-    let isValidPassword = false;
-    if (e.target.name === 'email') {
-      isValidEmail = this.isValidEmailAddress(e.target.value)
-    }
-    if (e.target.name === 'password') {
+    let isValidPassword = this.state.isValidPassword;
+    let isValidPassword2 = this.state.isValidPassword2;
+  
+    if (e.target.name === "password1") {
       isValidPassword = this.isValidPassword(e.target.value)
     }
+    if (e.target.name === "password2") {
+      isValidPassword2 = this.isValidPassword2(e.target.value)
+    }
+
     this.setState({
       [e.target.name]: e.target.value,
-      isValidEmail,
-      isValidPassword
+      isValidPassword,
+      isValidPassword2
     } as Pick<State, keyof State>);
   };
 
@@ -126,7 +143,10 @@ export class SignupPageComponent extends React.Component<Props, State> {
     e.preventDefault();
 
     this.Auth.submitSignup(username, email, password)
-    .then(res => this.props.login());
+    .then(res => this.props.login())
+    .catch(err => {
+      this.setState({errorMessage: err.message})
+    })
   };
 
   isValidPassword = (password:string) => {
@@ -134,9 +154,8 @@ export class SignupPageComponent extends React.Component<Props, State> {
     return reg.test(password);
   }
 
-  isValidEmailAddress = (email:string) => {
-    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/igm;
-    return reg.test(email)
+  isValidPassword2 = (password2:string) => {
+    return password2 === this.state.password1
   }
 }
 

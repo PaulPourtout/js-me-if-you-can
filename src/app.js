@@ -8,6 +8,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const DB = process.env.DB || "mongodb://localhost/jsing";
 const apiRouter = express.Router();
+const errorHandler = require("./utils/errorHandler");
 
 // Connect to database
 mongoose
@@ -24,24 +25,27 @@ app.use(cors(corsOptions));
 // Serve React app
 app.use(express.static(path.join(__dirname, "..", "client", "build")))
 
-
+// Middlewares
 apiRouter.use(express.json()); // Get json from posts request
 apiRouter.use(morgan("dev")); // Plugin to log requests to the console
 
+// Routes handling
 apiRouter.use("/users", userRouter);
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/katas", kataRouter);
 apiRouter.use("/series", serieRouter);
+apiRouter.get("/", (req, res) => {
+    res.send("JSme API"); 
+});
 
 app.use("/api", apiRouter);
 
-
-apiRouter.get("/", (req, res) => {
-    res.send("API"); 
-});
-
+// Unknown routes handling
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
 });
+
+// Errors handling
+app.use(errorHandler);
 
 module.exports = app;

@@ -41,9 +41,10 @@ export class LoginPageComponent extends React.Component<ILoginPageProps, any> {
           display: "flex"
         }}
       >
-        <Form>
+        <Form onSubmit={e => this.handleSubmitLogin(e, this.state.email, this.state.password)} >
           <label htmlFor="">Email:</label>
           <input
+            required
             style={inputStyle}
             type="text"
             value={this.state.email}
@@ -53,6 +54,7 @@ export class LoginPageComponent extends React.Component<ILoginPageProps, any> {
           />
           <label htmlFor="">Password:</label>
           <input
+            required
             style={inputStyle}
             name="password"
             type="password"
@@ -62,12 +64,11 @@ export class LoginPageComponent extends React.Component<ILoginPageProps, any> {
           />
           {
             this.state.errorMessage.length > 2 &&
-            <p>{this.state.errorMessage}</p>
+            <p style={{ color: 'red' }} >{this.state.errorMessage}</p>
           }
           <Button
             fullWidth
             active
-            onClick={e => this.handleSubmitLogin(e, this.state.email, this.state.password)}
           >
             Submit
           </Button>
@@ -85,7 +86,7 @@ export class LoginPageComponent extends React.Component<ILoginPageProps, any> {
 
     this.Auth.submitLogin(email, password)
     .then(res => this.props.login())
-    .catch(err => console.error(err))
+    .catch(err => this.setState({errorMessage: err.message}))
   };
 }
 
