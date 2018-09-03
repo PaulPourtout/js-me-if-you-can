@@ -34,75 +34,75 @@ export class SignupPageComponent extends React.Component<Props, State> {
     isValidPassword2: false,
   };
 
+  private EMAIL_PATTERN = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$";
+  private PASSWORD_PATTERN = "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,}";
+
   Auth = Services.Auth;
 
   render() {
-    const inputStyle = {
-      margin: "0.5rem 0",
-      width: "100%",
-      boxShadow: "none",
-      border: `2px solid ${ColorPalette.primary}`,
-      padding: "0.3rem",
-      fontSize: "1.5rem",
-      boxSizing: "border-box"
-    };
     return (
-      <main
-        style={{
-          backgroundColor: "#F4F4F4",
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex"
-        }}
-      >
-        <Form onSubmit={(e) => this.handleSubmitSignup(e, this.state.username, this.state.email, this.state.password1)}>
-          <label htmlFor="">Username:</label>
+      <main style={style.main} >
+        <Form onSubmit={
+            (e) => this.handleSubmitSignup(e, this.state.username, this.state.email, this.state.password1)
+          }>
+
+          <label htmlFor="username">Username:</label>
           <input
             required
-            style={ inputStyle }
+            style={ style.input }
             type="text"
             value={this.state.username}
             name="username"
             placeholder="Username"
             onChange={this.handleChangeInput}
           />
-          <label htmlFor="">Email:</label>
+
+          <label htmlFor="email">Email:</label>
           <input
             required
-            style={ inputStyle }
+            style={ style.input }
             type="text"
             value={this.state.email}
-            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+            pattern={this.EMAIL_PATTERN}
             name="email"
             placeholder="Email"
             onChange={this.handleChangeInput}
           />
+
           <label htmlFor="password1">Password:</label>
           <input
             required
-            style={{ ...inputStyle, ...this.isCorrectField(this.state.isValidPassword) }}
+            style={{
+              ...style.input,
+              ...this.isCorrectField(this.state.isValidPassword)
+            }}
             name="password1"
             type="password"
-            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            pattern={this.PASSWORD_PATTERN}
             value={this.state.password1}
             placeholder="password"
             onChange={this.handleChangeInput}
           />
+
           <label htmlFor="password2">Repeat password:</label>
           <input
             required
-            style={{ ...inputStyle, ...this.isCorrectField(this.state.isValidPassword2) }}
+            style={{
+              ...style.input,
+              ...this.isCorrectField(this.state.isValidPassword2)
+            }}
             name="password2"
             type="password"
+            pattern={this.state.password1}
             value={this.state.password2}
             placeholder="password"
             onChange={this.handleChangeInput}
           />
-          <span style={{ fontSize: "0.9rem", color: ColorPalette.lightText }}>Must contain more than 7 characters, upper and lower letters and numbers</span>
+          <span style={style.subText}>Must contain more than 7 characters, upper and lower letters and numbers</span>
+          
           {
             this.state.errorMessage.length > 2 &&
-            <p style={{ color: "red" }}>{this.state.errorMessage}</p>
+            <p style={{ color: "red", marginTop: "1rem" }}>{this.state.errorMessage}</p>
           }
 
           <Button
@@ -161,6 +161,29 @@ export class SignupPageComponent extends React.Component<Props, State> {
 
 export const SignupPage = UserListener(SignupPageComponent);
 
+
+const style:React.CSSProperties = {
+  input: {
+    margin: "0.5rem 0",
+    width: "100%",
+    boxShadow: "none",
+    border: `2px solid ${ColorPalette.primary}`,
+    padding: "0.3rem",
+    fontSize: "1.5rem",
+    boxSizing: "border-box"
+  },
+  main: {
+    backgroundColor: "#F4F4F4",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex"
+  },
+  subText: {
+    fontSize: "0.9rem",
+    color: ColorPalette.lightText
+  }
+}
 
 const Form = styled.form`
   display: flex;
