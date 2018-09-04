@@ -1,11 +1,12 @@
 import * as React from "react";
-import { PageContainer, Form, Card, CardTitle } from "../style/StyledComponents";
+import { Button, PageContainer, Form, Card, CardTitle, CardContent } from "../style/StyledComponents";
 import { IKata } from "../../interfaces/IKata";
 import { SearchInput } from "../components/SearchInput";
 import {InputText} from "../components/InputText";
 import styled from "styled-components";
 import { ColorPalette } from "../style/Palette";
 import { URL_API } from "../../utils/config/URL_API";
+import { IInput } from "../../interfaces/IInput";
 
 interface ISerie {
     title: string;
@@ -13,29 +14,64 @@ interface ISerie {
     katas: string[];
 }
 
+interface INewSerie {
+    title: IInput;
+    description: IInput;
+    katas: string[];
+}
+
 interface State {
-    newSerie: ISerie;
+    newSerie: INewSerie;
     allKatas: IKata[];
     searchedKata: string;
 }
 
 
 export class CreateSerie extends React.Component<any, State> {
+    private IS_NEW_SERIE: boolean = this.props.match.params.id === "new";
+    private newSerie: INewSerie = {
+        title: { label: "title", value: "", type: "text" },
+        description: { label: "description", value: "", type: "textarea" },
+        katas: []
+    }
+
     state = {
-        newSerie: {
-            title: "",
-            description: "",
-            katas: [],
-        },
+        newSerie: this.newSerie,
         allKatas: [],
         searchedKata: ""
     }
 
     componentWillMount() {
+        if (!this.IS_NEW_SERIE) {
+            fetch(`${URL_API}/series/${this.props.match.params.id}`)
+            .then(res => res.json())
+            .then(res => {
+                if (res.result) {
+                    this.setState({newSerie: this.prepareSerieForEditing(res.result)})
+                }
+            })
+            .catch(err => console.error(err))
+        }
+
         fetch(`${URL_API}/katas`)
         .then(res => res.json())
-        .then(res => this.setState({allKatas: res.result}, () => console.log(this.state.allKatas)))
+        .then(res => this.setState({
+            allKatas: res.result
+        }, () => console.log(this.state.allKatas)))
         .catch(err => console.error(err))
+    }
+
+
+    prepareSerieForEditing = (serie):INewSerie => {
+        const katas: string[] = serie.katas.map((kata) => kata._id); 
+        
+        const kataToEdit: INewSerie = {
+            title: { label: "title", value: serie.title, type: "text" },
+            description: { label: "description", value: serie.description, type: "textarea" },
+            katas: katas
+        }
+
+        return kataToEdit;
     }
 
 
@@ -43,33 +79,51 @@ export class CreateSerie extends React.Component<any, State> {
         return (
             <PageContainer>
                 <Card style={{flex: 1}}>
-                    <div style={{display:"flex", flexDirection:"row", backgroundColor: ColorPalette.secondary, justifyContent: "space-between", alignItems: "center"}}>
-                        <CardTitle>Create new serie</CardTitle>
-                    </div>
-                    <Form>
-                        <label htmlFor="title">Title</label>
-                        <input type="text" name="title" onChange={(e) => this.updateSerieValues(e, "title")} value={this.state.newSerie.title}/>
-                        <label htmlFor="description">Description</label>
-                        <input type="text" name="description" onChange={(e) => this.updateSerieValues(e, "description")} value={this.state.newSerie.description}/>
-                        <div style={{display: "flex", flex: 1}}>
-                            <div style={{flex: 1}}>
-                                <p>Search katas :</p>
-                                <SearchInput
-                                    allItems={this.state.allKatas}
-                                    renderItem={this.renderSearchedKata}
+                    <CardTitle>Create new serie</CardTitle>
+                    <CardContent>
+                        <Form onSubmit={(e) => this.handleSubmitSerie(e, this.state.newSerie, this.IS_NEW_SERIE)}>
+                            <label htmlFor="title">Title</label>
+                            <input
+                                type="text"
+                                name="title"
+                                onChange={(e) => this.updateSerieValues(e, "title")}
+                                value={this.state.newSerie.title.value}
+                            />
+                            <label htmlFor="description">Description</label>
+                            <input
+                                type="text"
+                                name="description"
+                                onChange={(e) => this.updateSerieValues(e, "description")}
+                                value={this.state.newSerie.description.value}
+                            />
+                            <div style={{display: "flex", flex: 1}}>
+                                <div style={{flex: 1}}>
+                                    <p>Search katas :</p>
+                                    <SearchInput
+                                        allItems={this.state.allKatas}
+                                        renderItem={this.renderSearchedKata}
                                     />
-                            </div>
-                            <div style={{flex: 1}}>
-                                <p>Current katas :</p>
-                                {
-                                    this.renderSelectedKatas(this.state.newSerie.katas)
-                                }
-                            </div>
+                                </div>
+                                <div style={{flex: 1}}>
+                                    <p>Current katas :</p>
+                                    {
+                                        this.renderSelectedKatas(this.state.newSerie.katas)
+                                    }
+                                </div>
 
-                        </div>
-
-                        <button onClick={(e) => this.submitNewSerie(e, this.state.newSerie)}>Submit new serie</button>
-                    </Form>
+                            </div>
+                        </Form>
+                    </CardContent>
+                    <Button
+                    style={{marginTop: "auto"}}
+                        active
+                        background={{
+                            main: ColorPalette.secondary,
+                            hover: ColorPalette.secondaryLight
+                        }}
+                        onClick={(e) => this.handleSubmitSerie(e, this.state.newSerie, this.IS_NEW_SERIE)}>
+                        Submit new serie
+                    </Button>
                 </Card>
             </PageContainer>
         )
@@ -86,23 +140,37 @@ export class CreateSerie extends React.Component<any, State> {
         )
     }
 
+
     updateSerieValues = (e, key:string) => {
         const newSerie = this.state.newSerie;
-        newSerie[key] = e.target.value;
+        newSerie[key].value = e.target.value;
 
         this.setState({newSerie})
     }
 
-    submitNewSerie = (e, newSerie:ISerie) => {
+    handleSubmitSerie = (e, newSerie:INewSerie, isNew:boolean) => {
         e.preventDefault();
 
-        fetch(`${URL_API}/series`, {
-            method: "POST",
+        const serie:ISerie = {
+            title: newSerie.title.value,
+            description: newSerie.description.value,
+            katas: newSerie.katas
+        }
+        console.log(newSerie)
+        const URL = isNew
+            ? `${URL_API}/series`
+            : `${URL_API}/series/${this.props.match.params.id}`;
+        
+        const METHOD = isNew ? "POST" : "PUT";
+
+        console.log(serie)
+        fetch(URL, {
+            method: METHOD,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(newSerie)
+            body: JSON.stringify(serie)
         })
         .then(res => res.json())
         .then(res => console.log(res))
@@ -132,13 +200,17 @@ export class CreateSerie extends React.Component<any, State> {
     }
 
     renderSelectedKatas = (selectedKatasId: string[]) => {
-        const selectedKatas = this.state.allKatas.filter((kata: IKata) => selectedKatasId.indexOf(kata._id) !== -1);
+        const selectedKatas = this.state.allKatas
+            .filter((kata: IKata) => {
+                return selectedKatasId.indexOf(kata._id) !== -1
+            }
+        );
 
         return (
             <ul>
                 {
                     selectedKatas.map((kata:IKata, index:number) => (
-                        <ListItem>
+                        <ListItem key={`${kata.description.title}-${index}`}>
                             <p>{kata.description.title}</p>
                             <button onClick={(e) => this.unselectKata(e, kata._id)} >unselect</button>
                         </ListItem>

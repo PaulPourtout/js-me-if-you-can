@@ -5,12 +5,8 @@ import styled from "styled-components";
 import { IKata } from '../../interfaces/IKata';
 import { EditKata } from '../components/EditKata';
 import {URL_API} from '../../utils/config/URL_API';
+import {IInput} from '../../interfaces/IInput';
 
-interface IInput {
-    label: string;
-    value: string;
-    type: "text" | "textarea";
-}
 
 interface ITest {
     arg: IInput;

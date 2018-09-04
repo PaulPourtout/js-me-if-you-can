@@ -16,10 +16,13 @@ export const Button = styled.button`
     width: ${(p: IButton) => (p.fullWidth ? "100%" : "auto")};
     outline: none;
     transition: 0.2s ease;
+    font-weight: bold;
+    font-size: 1rem;
 
     a {
         color: ${ColorPalette.tertiary};
         font-size: 1rem;
+        font-weight: bold;
         text-decoration: none;
     }
 
@@ -115,7 +118,7 @@ export const CardContent = styled.div`
 
 export const KataTitle = styled.h1`
     font-size: 1.3rem;
-    color: ${ColorPalette.tertiary};
+    color: ${ColorPalette.primary};
     text-transform: uppercase;
     font-weight: bold;
 `;

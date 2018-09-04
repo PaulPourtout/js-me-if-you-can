@@ -72,18 +72,18 @@ class SeriePageComponent extends React.Component<any, State> {
                                 ))
                             }
                         </ul>
-                        <Link to={`/editor/series/${this.state.serie._id}`}>
-                            <Button
-                                active
-                                background={{
-                                    main: ColorPalette.secondary,
-                                    hover: ColorPalette.secondaryLight
-                                }}>
-                                Train
-                            </Button>
-                        </Link>
-
                     </CardContent>
+                    <Link to={`/editor/series/${this.state.serie._id}`}>
+                        <Button
+                            fullWidth
+                            active
+                            background={{
+                                main: ColorPalette.secondary,
+                                hover: ColorPalette.secondaryLight
+                            }}>
+                            Start the serie !
+                        </Button>
+                    </Link>
                 </Card>
             </PageContainer>
         )

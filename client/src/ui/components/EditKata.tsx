@@ -1,8 +1,12 @@
 import * as React from 'react';
 import { UserListener } from '../../context/UserProvider';
-import { PageContainer, Form } from "../style/StyledComponents";
-import styled from "styled-components";
-import { IKata } from '../../interfaces/IKata';
+import {
+    Form,
+    PageContainer,
+    Card,
+    CardContent,
+    CardTitle
+} from "../style/StyledComponents";
 
 
 interface IInput {
@@ -46,14 +50,19 @@ class EditKataComponent extends React.PureComponent<Props, State> {
         console.log("edit kata state", this.props.kata);
         return (
             <PageContainer>
-                <Form>
-                    {
-                        this.renderForm(this.props.kata)
-                    }
-                    <button onClick={(e) => this.addTest(e, this.props.kata)}>Add new test</button>
-                    <button onClick={(e) => this.props.createOrUpdateKata(e, this.props.kata, this.props.mode)}>{this.props.mode} kata</button>
-                    <button onClick={(e) => this.props.deleteKata(e)}>Delete kata</button>
-                </Form>
+                <Card>
+                    <CardTitle>Create New Kata</CardTitle>
+                    <CardContent>
+                        <Form>
+                            {
+                                this.renderForm(this.props.kata)
+                            }
+                            <button onClick={(e) => this.addTest(e, this.props.kata)}>Add new test</button>
+                            <button onClick={(e) => this.props.createOrUpdateKata(e, this.props.kata, this.props.mode)}>{this.props.mode} kata</button>
+                            <button onClick={(e) => this.props.deleteKata(e)}>Delete kata</button>
+                        </Form>
+                    </CardContent>
+                </Card>
             </PageContainer>
         )
     }

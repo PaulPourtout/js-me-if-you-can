@@ -14,7 +14,7 @@ const ctrl = {
                 return res.json({success: false, result: "no serie found"})
             }
         })
-        .catch(err => res.json({success: false, result: err}))
+        .catch(err => next({status: 500, message: "Error during request"}));
     },
 		
 	getAll : (req, res) => {
@@ -35,13 +35,24 @@ const ctrl = {
 		serie
 		.save()
 		.then(result => res.json({ success: true, message: "Serie added" }))
-		.catch(err => res.send({success: false, message: err}));
-	},
+		.catch(err => next({status: 500, message: "Error during request"}));
+    },
+    
+    updateOne : (req, res, next) => {
+        const {title, description, katas} = req.body;
+        
+        Serie.findOneAndUpdate({ _id: req.params.serieId },
+        {
+            $set: { title, description, katas }
+        })
+        .then(result => res.json({success: true, result: "Serie Updated"}))
+        .catch(err => next({status: 500, message: "Error during request"}));
+    },
 
 	deleteOne : (req, res) => {
 		Serie.remove({ _id: req.params.serieId })
 		.then(result => res.json({ success: true, message: "serie deleted" }))
-		.catch(err => res.send({success: false, message: err}));
+		.catch(err => next({status: 500, message: "Error during request"}));
     },
 };
 

@@ -60,10 +60,17 @@ export class KataPageComponent extends React.Component<any, State> {
                     <CardContent>
                         <p>Description :</p>
                         <p>{this.state.kata.description.content}</p>
-                        <Link to={`/editor/katas/${this.state.kata._id}`} style={{marginTop: '3rem'}}>
-                            <Button active background={{main: ColorPalette.secondary, hover: ColorPalette.secondaryLight}}>Train</Button>
-                        </Link>
                     </CardContent>
+                        <Link to={`/editor/katas/${this.state.kata._id}`} style={{marginTop: '3rem'}}>
+                            <Button
+                                fullWidth
+                                active
+                                background={{
+                                    main: ColorPalette.secondary,
+                                    hover: ColorPalette.secondaryLight
+                                }}
+                            >Train</Button>
+                        </Link>
                 </Card>
             </PageContainer>
         )

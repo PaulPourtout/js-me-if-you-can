@@ -32,6 +32,7 @@ const authRouter = express.Router();
     .get("/", SerieCtrl.getAll)
     .post("/", SerieCtrl.addOne)
     .get("/:serieId", SerieCtrl.getById)
+    .put("/:serieId", SerieCtrl.updateOne)
     .delete("/:serieId", SerieCtrl.deleteOne)
 
     authRouter.post("/", Auth.login);
