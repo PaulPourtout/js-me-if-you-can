@@ -26,6 +26,11 @@ export const GlobalStyle = {
         fontSize: "1rem",
         margin: "0.2rem",
         zIndex: 100
+    },
+
+    iconButton: {
+        color: ColorPalette.tertiary,
+        fontSize: "1.5rem"
     }
     
 }

@@ -98,11 +98,27 @@ export const CardHoverable = styled.section`
 
 export const CardTitle = styled.div`
     padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     text-transform: uppercase;
     color: ${ColorPalette.primary};
     background-color: ${ColorPalette.secondary};
     font-weight: bold;
-`
+`;
+
+export const CardContent = styled.div`
+    padding: 2rem 10%;
+    display: flex;
+    flex-direction: column;
+`;
+
+export const KataTitle = styled.h1`
+    font-size: 1.3rem;
+    color: ${ColorPalette.tertiary};
+    text-transform: uppercase;
+    font-weight: bold;
+`;
 
 export const Form = styled.form`
     display: flex;

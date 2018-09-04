@@ -2,6 +2,7 @@ import * as React from 'react';
 import {UserListener} from '../../context/UserProvider';
 import {IUser} from '../../interfaces/IUser';
 import { URL_API } from '../../utils/config/URL_API';
+import { PageContainer, Card, CardTitle, CardContent } from '../style/StyledComponents';
 
 
 interface IProps {
@@ -31,16 +32,22 @@ export class Account extends React.Component<IProps, IState> {
 
         const createdDate = new Date(this.state.userInfos.created_at);
         return (
-            <div>
-                <h1>My account</h1>
-                <form>
-                    <label htmlFor="">Username :</label>
-                    <input type="text" value={this.state.userInfos.username}/>
-                    <label htmlFor="">Email :</label>
-                    <input type="text" value={this.state.userInfos.email}/>
-                    <p>{createdDate.toDateString()}</p>
-                </form>
-            </div>
+            <PageContainer>
+                <Card>
+                    <CardTitle>
+                        <h1>My account</h1>
+                    </CardTitle>
+                    <CardContent>
+                        <form>
+                            <label htmlFor="">Username :</label>
+                            <input type="text" value={this.state.userInfos.username}/>
+                            <label htmlFor="">Email :</label>
+                            <input type="text" value={this.state.userInfos.email}/>
+                            <p>{createdDate.toDateString()}</p>
+                        </form>
+                    </CardContent>
+                </Card>
+            </PageContainer>
         )
     }
 }
