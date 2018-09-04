@@ -10,12 +10,15 @@ import {
     Button,
     CardContent,
     KataTitle,
-    CardTitle
+    CardTitle,
+    IconContainer
 } from '../style/StyledComponents';
 import { ColorPalette } from '../style/Palette';
 import {GlobalStyle} from '../style/GlobalStyle';
 import { URL_API } from '../../utils/config/URL_API';
 import Settings from 'react-icons/lib/md/settings';
+import Delete from 'react-icons/lib/md/delete';
+import { history } from "../../Router";
 
 interface State {
     loading: boolean;
@@ -40,6 +43,20 @@ export class KataPageComponent extends React.Component<any, State> {
         .catch(err => console.log('problem with fetching', err))
     }
 
+    handleDeleteKata = (e, kataId) => {
+        e.preventDefault();
+        console.log("KATA ID", kataId)
+        fetch(`${URL_API}/katas/${kataId}`, {
+            method: "DELETE"
+        })
+        .then(res => res.json())
+        .then(res => {
+            console.log("result", res)
+            history.push("/kataslist")
+        })
+        .catch(err => console.error(err))
+    }
+
     render () {
         if (this.state.loading) return <PageContainer></PageContainer>
         return(
@@ -49,12 +66,27 @@ export class KataPageComponent extends React.Component<any, State> {
                         <KataTitle>{this.state.kata.description.title}</KataTitle>
                         {
                             this.props.user.admin &&
-                            <Link
-                                to={`/admin/kata/${this.state.kata._id}`}
-                                style={GlobalStyle.iconButton} 
-                            >
-                                <Settings></Settings>
-                            </Link>
+                            <div style={ style.IconsContainer } >
+                                <Link
+                                    to={`/admin/kata/${this.state.kata._id}`}
+                                    style={GlobalStyle.iconButton} 
+                                >
+                                    <IconContainer
+                                        color={ColorPalette.tertiary}
+                                        hoverColor={ColorPalette.lightSeparator}
+                                    >
+                                        <Settings style={ GlobalStyle.iconButton } />
+                                    </IconContainer>
+                                    <IconContainer
+                                        color={ColorPalette.tertiary}
+                                        hoverColor={ColorPalette.lightSeparator}
+                                        onClick={ (e) => this.handleDeleteKata(e, this.props.match.params.kataId)}
+                                    >
+                                        <Delete style={ GlobalStyle.iconButton }/>
+                                    </IconContainer>
+                                </Link>
+
+                            </div>
                         }
                     </CardTitle>
                     <CardContent>
@@ -77,5 +109,11 @@ export class KataPageComponent extends React.Component<any, State> {
     }
 }
 
+const style:React.CSSProperties = {
+    IconsContainer: {
+        display: "flex",
+        alignItems: "center"
+    }
+}
 
 export const KataPage = UserListener(KataPageComponent);

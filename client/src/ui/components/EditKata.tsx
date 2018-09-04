@@ -5,37 +5,20 @@ import {
     PageContainer,
     Card,
     CardContent,
-    CardTitle
+    CardTitle,
+    Button
 } from "../style/StyledComponents";
-
-
-interface IInput {
-    label: string;
-    value: string;
-    type: "text" | "textarea";
-}
-
-interface ITest {
-    arg: IInput;
-    solution: any;
-}
-
-interface INewKata<> {
-    title: IInput;
-    descriptionContent: IInput;
-    example: IInput;
-    functionName: IInput;
-    parameterName: IInput;
-    tests: ITest[];
-}
-
+import {ColorPalette} from "../style/Palette"
+import styled from "styled-components";
+import {INewKata} from "../../interfaces/INewKata";
+import {ITest} from "../../interfaces/ITest";
+import {IInput} from "../../interfaces/IInput";
 
 
 interface Props {
     kata: INewKata;
     updateKataValue : (e, key, itemIndex) => void;
     createOrUpdateKata: (e, kata: INewKata, mode: "create" | "update") => void;
-    deleteKata: (e) => void;
     mode: "create" | "update";
 }
 
@@ -45,23 +28,32 @@ interface State {
 
 
 class EditKataComponent extends React.PureComponent<Props, State> {
+    private IS_NEW_KATA: boolean = this.props.mode === "create";
+    state = {}
 
-    render () {
-        console.log("edit kata state", this.props.kata);
+    render () { 
         return (
             <PageContainer>
                 <Card>
-                    <CardTitle>Create New Kata</CardTitle>
+                    <CardTitle>{this.IS_NEW_KATA ? "Create New" : "Update"} Kata</CardTitle>
                     <CardContent>
-                        <Form>
+                        <Form onSubmit={(e) => this.props.createOrUpdateKata(e, this.props.kata, this.props.mode)}>
                             {
                                 this.renderForm(this.props.kata)
                             }
                             <button onClick={(e) => this.addTest(e, this.props.kata)}>Add new test</button>
-                            <button onClick={(e) => this.props.createOrUpdateKata(e, this.props.kata, this.props.mode)}>{this.props.mode} kata</button>
-                            <button onClick={(e) => this.props.deleteKata(e)}>Delete kata</button>
                         </Form>
                     </CardContent>
+                    <Button
+                    style={{marginTop: "auto"}}
+                        active
+                        background={{
+                            main: ColorPalette.secondary,
+                            hover: ColorPalette.secondaryLight
+                        }}
+                        onClick={(e) => this.props.createOrUpdateKata(e, this.props.kata, this.props.mode)}>
+                        {this.IS_NEW_KATA ? "Submit new" : "Update"} Kata
+                    </Button>
                 </Card>
             </PageContainer>
         )
@@ -72,14 +64,14 @@ class EditKataComponent extends React.PureComponent<Props, State> {
                 <label htmlFor={key}>{managedObject[key].label}</label>
                 {
                     managedObject[key].type === "textarea"
-                    ? <textarea
+                    ? <TextArea
                         name={key}
                         onChange={(e) => this.props.updateKataValue(e, key, inputIndex)}
                         value={managedObject[key].value}
                     />
                     
                     : key !== "tests"
-                        ? <input type={managedObject[key].type}
+                        ? <TextInput type={managedObject[key].type}
                                 name={key}
                                 onChange={(e) => this.props.updateKataValue(e, key, inputIndex)}
                                 value={managedObject[key].value}
@@ -102,6 +94,7 @@ class EditKataComponent extends React.PureComponent<Props, State> {
 
     addTest = (e, currentObject) => {
         e.preventDefault();
+
         const newObject = {...currentObject};
         const index = newObject.tests.length + 1;
         const newTest = {
@@ -123,3 +116,22 @@ class EditKataComponent extends React.PureComponent<Props, State> {
 }
 
 export const EditKata = UserListener(EditKataComponent);
+
+const TextInput = styled.input`
+    border: none;
+    font-size: 1rem;
+    border-bottom: 2px solid ${ColorPalette.primary};
+    padding: 0.5rem;
+    color: ${ColorPalette.activeText}
+`;
+
+const TextArea = styled.textarea`
+    resize: none;
+    border: none;
+    font-size: 1rem;
+    border-bottom: 2px solid ${ColorPalette.primary};
+    padding: 0.5rem;
+    color: ${ColorPalette.activeText}
+`;
+
+

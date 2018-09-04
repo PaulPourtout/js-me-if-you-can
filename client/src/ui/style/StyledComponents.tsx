@@ -55,6 +55,24 @@ export const PageContainer = EditorContainer.extend`
     }
 `;
 
+interface IIconContainer {
+    color?: string;
+    hoverColor?: string;
+}
+
+export const IconContainer = styled.button`
+    background-color: transparent;
+    color: ${(p:IIconContainer) => p.color ? p.color : "inherit"};
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+
+    &:hover {
+        color: ${(p:IIconContainer) => p.hoverColor ? p.hoverColor : "inherit"}
+    }
+`;
+
 export const SectionTitle = styled.h3`
     font-size: 14px;
     padding: 15px;

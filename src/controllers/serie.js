@@ -3,7 +3,7 @@ const Serie = require("../models/serie");
 
 
 const ctrl = {    
-    getById : (req, res) => {
+    getById : (req, res, next) => {
         Serie.findById(req.params.serieId)
         .populate({path: 'katas'})
         .then(result => {
@@ -23,7 +23,7 @@ const ctrl = {
 		.catch(err => res.send(err));
 	},
 
-	addOne : async (req, res) => {
+	addOne : async (req, res, next) => {
 		const { title, description, katas } = req.body;
 
 		const serie = new Serie({
@@ -49,7 +49,7 @@ const ctrl = {
         .catch(err => next({status: 500, message: "Error during request"}));
     },
 
-	deleteOne : (req, res) => {
+	deleteOne : (req, res, next) => {
 		Serie.remove({ _id: req.params.serieId })
 		.then(result => res.json({ success: true, message: "serie deleted" }))
 		.catch(err => next({status: 500, message: "Error during request"}));

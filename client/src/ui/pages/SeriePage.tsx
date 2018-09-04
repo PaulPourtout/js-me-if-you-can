@@ -7,12 +7,15 @@ import {
     Button,
     CardTitle,
     KataTitle,
-    CardContent
+    CardContent,
+    IconContainer
 } from '../style/StyledComponents';
 import { ColorPalette } from "../style/Palette";
 import { UserListener } from '../../context/UserProvider';
 import Settings from "react-icons/lib/md/settings";
+import Delete from "react-icons/lib/md/delete";
 import {GlobalStyle} from "../style/GlobalStyle";
+import { history } from "../../Router";
 
 interface State {
     loading: boolean;
@@ -40,6 +43,23 @@ class SeriePageComponent extends React.Component<any, State> {
         .catch(err => console.error(err))
     }
 
+    handleDeleteSerie = (serieId: string) => {
+        fetch(`${URL_API}/series/${serieId}`, {
+            method: "DELETE",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(res => {
+            console.log(res)
+            history.push('/serieslist')
+            
+        })
+        .catch(err => console.error(err))
+    }
+
     render () {
         if (this.state.loading) return <div>...Loading</div>
         return (
@@ -49,12 +69,26 @@ class SeriePageComponent extends React.Component<any, State> {
                         <KataTitle>{this.state.serie.title}</KataTitle>
                         {
                             this.props.user.admin &&
-                            <Link
+                                <div style={style.IconsContainer}>    
+                                <Link
                                 to={`/admin/serie/${this.state.serie._id}`}
                                 style={GlobalStyle.iconButton}    
-                            >
-                                <Settings></Settings>
-                            </Link>
+                                >
+                                    <IconContainer
+                                        color={ColorPalette.tertiary}
+                                        hoverColor={ColorPalette.lightSeparator}
+                                    >
+                                        <Settings style={ GlobalStyle.iconButton } />
+                                    </IconContainer>
+                                </Link>
+                                <IconContainer
+                                    color={ColorPalette.tertiary}
+                                    hoverColor={ColorPalette.lightSeparator}
+                                    onClick={ () => this.handleDeleteSerie(this.props.match.params.serieId)}
+                                >
+                                    <Delete style={ GlobalStyle.iconButton }/>
+                                </IconContainer>
+                            </div>
                         }
                     </CardTitle>
                     <CardContent>
@@ -100,5 +134,9 @@ const style:React.CSSProperties = {
     },
     listItem: {
         padding: "0.5rem 0"
+    },
+    IconsContainer: {
+        display: "flex",
+        alignItems: "center"
     }
 }
