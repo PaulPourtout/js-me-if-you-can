@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Katas = require('../utils/kata');
 
 const kataSchema = new Schema({
     functionName: {type: String, required: true},
@@ -18,12 +19,30 @@ const kataSchema = new Schema({
         example: {type: String, required: false}
     },
     tests: [{
-        arg: String,
-        solution: Schema.Types.Mixed,
+        arg: {
+            value: String,
+            isString: Boolean
+        },
+        solution: {
+            value: Schema.Types.Mixed,
+            isString: Boolean
+        },
         assertFunc: String
     }]
 }, {timestamps: true})
 
 const Kata = mongoose.model('Kata', kataSchema);
+
+// Katas.map(({ functionName, parameterName, description, tests }) => {
+//     const newKata = new Kata({
+//         functionName,
+//         parameterName,
+//         description,
+//         tests
+//     });
+    
+//     newKata.save();
+// })
+
 
 module.exports = Kata;

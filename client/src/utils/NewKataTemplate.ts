@@ -8,12 +8,13 @@ export const NEW_KATA: INewKata = {
     parameterName: { label: "parameter name", value: "", type: "text" },
     tests: [
         {
-            arg: { label: "test-1 arguments", value: "", type: "text"},
-            solution: { label: "test-1 solution", value: "", type: "text"}
+            arg: { label: "test-1 arguments", value: "", type: "text", isString: false},
+            solution: { label: "test-1 solution", value: "", type: "text", isString: false}
         },
         {
-            arg: { label: "test-2 arguments", value: "", type: "text"},
-            solution: { label: "test-2 solution", value: "", type: "text"}
+            arg: { label: "test-2 arguments", value: "", type: "text", isString: false},
+            solution: { label: "test-2 solution", value: "", type: "text", isString: false}
         }
     ]
 }
+

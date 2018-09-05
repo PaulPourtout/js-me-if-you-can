@@ -59,12 +59,16 @@ class CreateKataPageComponent extends React.Component<any, State> {
         kataToEdit.tests = kata.tests.map((test, index) => (
             {
                 arg: {
-                    label: `test-${index + 1} arguments`,
-                    value: test.arg, type: "text" as "text"
+                    label: `Test ${index + 1}° arguments`,
+                    value: test.arg.value,
+                    type: "text",
+                    isString: test.arg.isString
                 },
                 solution: {
-                    label: `test-${index + 1} solution`,
-                    value: test.solution, type: "text"
+                    label: `Test ${index + 1}° solution`,
+                    value: test.solution.value,
+                    type: "text",
+                    isString: test.solution.isString
                 }
             }
         ))
@@ -72,19 +76,24 @@ class CreateKataPageComponent extends React.Component<any, State> {
         return kataToEdit;
     }
 
-    updateValue = (e, key, itemIndex ?: number) => {
+    updateValue = (e, key, itemIndex ?: number, isStringValue?: boolean) => {
         const newObject = {...this.state.newKata};
 
         if (key in newObject && (newObject[key].value || newObject[key].value === "")) {
             newObject[key].value = e.target.value;
         }
         else {
-            newObject.tests[itemIndex][key].value = e.target.value;
+            if (isStringValue) {
+                newObject.tests[itemIndex][key].isString = e.target.checked;   
+                console.log({checked: e.target.checked, string: newObject.tests[itemIndex][key].isString});
+            } else {
+                newObject.tests[itemIndex][key].value = e.target.value;
+            }
         }
         this.setState({newKata: newObject})
     }
 
-    createNewKata = (e, kata: INewKata, mode: "create" | "update") => {
+    createNewKata = (e, kata: INewKata, isNewKata: boolean) => {
         e.preventDefault();
         const {
             title,
@@ -95,7 +104,8 @@ class CreateKataPageComponent extends React.Component<any, State> {
             tests 
         } = kata
 
-        const URL = this.IS_NEW_KATA
+        // console.log({kata});
+        const URL = isNewKata
             ? `${URL_API}/katas/`
             : `${URL_API}/katas/${this.props.match.params.id}`;
         const REQUETE_TYPE = this.IS_NEW_KATA ? "POST" : "PUT";
@@ -112,8 +122,14 @@ class CreateKataPageComponent extends React.Component<any, State> {
             tests: []
         }
         kataSchema.tests = tests.map((test:ITest) => ({
-                arg: test.arg.value,
-                solution: JSON.parse(test.solution.value),
+                arg: {
+                    value: test.arg.isString ? `\'${test.arg.value}\'` : test.arg.value,
+                    isString: test.arg.isString
+                },
+                solution: {
+                    value: test.solution.isString ? `${test.solution.value}` : JSON.parse(test.solution.value),
+                    isString: test.arg.isString
+                },
                 assertFunc: "equal"
         }));
 
@@ -136,21 +152,22 @@ class CreateKataPageComponent extends React.Component<any, State> {
             <Card>
                 <CardTitle>{this.IS_NEW_KATA ? "Create New" : "Update"} Kata</CardTitle>
                 <CardContent>
-                    <Form onSubmit={(e) => this.createNewKata(e, this.props.kata, this.props.mode)}>
+                    <Form onSubmit={(e) => this.createNewKata(e, this.state.newKata, this.IS_NEW_KATA)}>
                         {
                             this.renderForm(this.state.newKata)
                         }
-                        <button onClick={(e) => this.addTest(e, this.props.kata)}>Add new test</button>
+                        <button onClick={(e) => this.addTest(e, this.state.newKata)}>Add new test</button>
                     </Form>
                 </CardContent>
                 <Button
-                style={{marginTop: "auto"}}
+                    style={{marginTop: "auto"}}
                     active
                     background={{
                         main: ColorPalette.secondary,
                         hover: ColorPalette.secondaryLight
                     }}
-                    onClick={(e) => this.createNewKata(e, this.props.kata, this.props.mode)}>
+                    onClick={(e) => this.createNewKata(e, this.state.newKata, this.IS_NEW_KATA)}
+                >
                     {this.IS_NEW_KATA ? "Submit new" : "Update"} Kata
                 </Button>
             </Card>
@@ -158,27 +175,50 @@ class CreateKataPageComponent extends React.Component<any, State> {
         )
     }
 
-    renderForm = (managedObject, inputIndex?: number) => Object.keys(managedObject).map((key, index) => (
-        <React.Fragment key={index}>
-            <label htmlFor={key}>{managedObject[key].label}</label>
-            {
-                managedObject[key].type === "textarea"
-                ? <TextArea
-                    name={key}
-                    onChange={(e) => this.updateValue(e, key, inputIndex)}
-                    value={managedObject[key].value}
-                />
-                
-                : key !== "tests"
-                    ? <TextInput type={managedObject[key].type}
+    renderForm = (managedObject, inputIndex?: number) => Object.keys(managedObject).map((key, index) => {
+        let {label, type, value, isString} = managedObject[key];
+        console.log(managedObject[key])
+        return (
+            <React.Fragment key={index}>
+                <Label htmlFor={key}>{label}</Label>
+                {
+                    type === "textarea"
+                    ? (
+                        <TextArea
                             name={key}
                             onChange={(e) => this.updateValue(e, key, inputIndex)}
-                            value={managedObject[key].value}
-                    />
-                    : this.renderTests(managedObject)
-            }
-        </React.Fragment>
-    ))
+                            value={value}
+                        />
+                    )                
+                    : key !== "tests"
+                        ? (
+                            <div style={{display: "flex"}}>
+                                <TextInput type={type}
+                                    name={key}
+                                    onChange={(e) => this.updateValue(e, key, inputIndex)}
+                                    value={value}
+                                    />
+
+                                {
+                                    (key === "solution" || key === "arg") && (
+                                        <div>
+                                            <label>Is a string value</label>       
+                                            <input
+                                                type="checkbox"
+                                                onChange={(e) => this.updateValue(e, key, inputIndex, true)}
+                                                checked={isString}
+                                            />
+                                        </div>
+
+                                    )
+                                }
+                            </div>
+                        )
+                        : this.renderTests(managedObject)
+                }
+            </React.Fragment>
+        )
+    })
 
     renderTests = (currentObject) => (
         <React.Fragment>
@@ -199,12 +239,14 @@ class CreateKataPageComponent extends React.Component<any, State> {
             arg: {
                 label: `test-${index} arguments`,
                 value: "",
-                type: "text"
+                type: "text",
+                isString: false
             },
             solution: {
                 label: `test-${index} solution`,
                 value: "",
-                type: "text"
+                type: "text",
+                isString: false
             }
         }
         newObject.tests = [...newObject.tests, newTest]
@@ -215,11 +257,19 @@ class CreateKataPageComponent extends React.Component<any, State> {
 
 export const CreateKata = UserListener(CreateKataPageComponent);
 
+const Label = styled.label`
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: ${ColorPalette.lightText};
+
+`;
+
 const TextInput = styled.input`
     border: none;
     font-size: 1rem;
     border-bottom: 2px solid ${ColorPalette.primary};
     padding: 0.5rem;
+    flex: 1;
     color: ${ColorPalette.activeText}
 `;
 

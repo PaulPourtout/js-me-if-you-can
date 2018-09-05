@@ -11,7 +11,6 @@ export default [
    * */
 
   {
-    _id: 0,
     functionName: "sayHello",
     parameterName: "name",
     solutions: [],
@@ -20,17 +19,33 @@ export default [
       content: `Return the string "Hello, " plus the string in argument.\nEx: sayHello('World') => "Hello, World"`
     },
     tests: [
-      { arg: "'World'", solution: "Hello, World", assertFunc: "equal" },
-      { arg: "'Neo'", solution: "Hello, Neo", assertFunc: "equal" },
-      { arg: "'42'", solution: "Hello, 42", assertFunc: "equal" },
-      { arg: "''", solution: "Hello, ", assertFunc: "equal" },
-      { arg: "'Nicolas'", solution: "Hello, Nicolas", assertFunc: "equal" }
+      { 
+        arg: { value: "'World'", isString: true },
+        solution: { value: "Hello, World", isString: true },
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "'Neo'", isString: true},
+        solution: {value: "Hello, Neo", isString: true},
+        assertFunc: "equal" },
+      {
+        arg: {value: "'42'", isString: true},
+        solution: {value: "Hello, 42", isString: true},
+        assertFunc: "equal"
+      },
+      { 
+        arg: {value: "''", isString: true},
+        solution: {value: "Hello, ", isString: true},
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "'Nicolas'", isString: true},
+        solution: {value: "Hello, Nicolas", isString: true},
+        assertFunc: "equal"
+      }
     ],
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   },
   {
-    _id: 0,
     functionName: "getFirstGreaterThanSecond",
     parameterName: "arg1, arg2",
     solutions: [],
@@ -39,17 +54,34 @@ export default [
       content: `Given two arguments arg1 and arg2, you must return true if first argument is greater or false if it is not.`
     },
     tests: [
-      { arg: "1, 2", solution: false, assertFunc: "equal" },
-      { arg: "234, 5", solution: true, assertFunc: "equal" },
-      { arg: "2001, 2001", solution: false, assertFunc: "equal" },
-      { arg: "43243423, 897978", solution: true, assertFunc: "equal" },
-      { arg: "0, 01", solution: false, assertFunc: "equal" }
+      {
+        arg: {value: "1, 2", isString: false},
+        solution: {value: false, isString: false},
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "234, 5", isString: false},
+        solution: {value: true, isString: false},
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "2001, 2001", isString: false},
+        solution: {value: false, isString: false},
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "43243423, 897978", isString: false},
+        solution: {value: true, isString: false},
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "0, 01", isString: false},
+        solution: {value: false, isString: false},
+        assertFunc: "equal"
+      }
     ],
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   },
   {
-    _id: 0,
     functionName: "getArgumentsSum",
     parameterName: "a, b",
     solutions: [],
@@ -58,15 +90,24 @@ export default [
       content: `Return the sum of both arguments`
     },
     tests: [
-      { arg: "2, 2", solution: 4, assertFunc: "equal" },
-      { arg: "0, 0", solution: 0, assertFunc: "equal" },
-      { arg: "123, 456", solution: 579, assertFunc: "equal" }
+      {
+        arg: {value: "2, 2", isString: false},
+        solution: {value: 4, isString: false},
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "0, 0", isString: false},
+        solution: {value: 0, isString: false},
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "123, 456", isString: false},
+        solution: {value: 579, isString: false},
+        assertFunc: "equal"
+      }
     ],
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   },
   {
-    _id: 0,
     functionName: "getSquare",
     parameterName: "x",
     solutions: [],
@@ -75,17 +116,34 @@ export default [
       content: `Given a number x, return its square.`
     },
     tests: [
-      { arg: "2", solution: 4, assertFunc: "equal" },
-      { arg: "56", solution: 3136, assertFunc: "equal" },
-      { arg: "42", solution: 1764, assertFunc: "equal" },
-      { arg: "0", solution: 0, assertFunc: "equal" },
-      { arg: "540", solution: 291600, assertFunc: "equal" }
+      {
+        arg: {value: "2", isString: false},
+        solution: {value: 4, isString: false},
+        assertFunc: "equal"
+      },
+      { 
+        arg: {value: "56"}, 
+        solution: {value: 3136, isString: false},
+        assertFunc: "equal" 
+      },
+      { 
+        arg: {value: "42"}, 
+        solution: {value: 1764, isString: false},
+        assertFunc: "equal" 
+      },
+      { 
+        arg: {value: "0"}, 
+        solution: {value: 0, isString: false},
+        assertFunc: "equal" 
+      },
+      { 
+        arg: {value: "540"}, 
+        solution: {value: 291600, isString: false},
+        assertFunc: "equal" 
+      }
     ],
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   },
   {
-    _id: 0,
     functionName: "revertString",
     parameterName: "str",
     solutions: [],
@@ -94,17 +152,34 @@ export default [
       content: `Return the string with letters in inverted order. Ex: revertString('Hello') => "olleH"`
     },
     tests: [
-      { arg: "'Hello'", solution: "olleH", assertFunc: "equal" },
-      { arg: "''", solution: "", assertFunc: "equal" },
-      { arg: "'Twelves Monkeys'", solution: "syeknoM sevlewT", assertFunc: "equal" },
-      { arg: "'There is no spoon'", solution: "noops on si erehT", assertFunc: "equal" },
-      { arg: "'123456'", solution: "654321", assertFunc: "equal" }
+      {
+        arg: {value: "'Hello'", isString: true},
+        solution: "olleH",
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "''", isString: true},
+        solution: "",
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "'Twelves Monkeys'", isString: true},
+        solution: "syeknoM sevlewT",
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "'There is no spoon'", isString: true},
+        solution: "noops on si erehT",
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "'123456'", isString: true},
+        solution: "654321",
+        assertFunc: "equal"
+      }
     ],
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   },
   {
-    _id: 0,
     functionName: "isPalindrome",
     parameterName: "str",
     solutions: [],
@@ -113,19 +188,44 @@ export default [
       content: `Given a string. Check if it is a palindrome. Make the function case insensitive`
     },
     tests: [
-      { arg: "'doggod'", solution: true, assertFunc: "equal" },
-      { arg: "'Kayak'", solution: true, assertFunc: "equal" },
-      { arg: "'canoe'", solution: false, assertFunc: "equal" },
-      { arg: "'zrjfel:,zklefnzakd'", solution: false, assertFunc: "equal" },
-      { arg: "'hlbeeykqqqqkyeeblh'", solution: true, assertFunc: "equal" },
-      { arg: "'abcd'", solution: false, assertFunc: "equal" },
-      { arg: "'z'", solution: false, assertFunc: "equal" }
+      {
+        arg: {value: "'doggod'", isString: true}, 
+        solution: {value: true, isString: false},
+        assertFunc: "equal" 
+      },
+      {
+        arg: {value: "'Kayak'", isString: true}, 
+        solution: {value: true, isString: false},
+        assertFunc: "equal" 
+      },
+      {
+        arg: {value: "'canoe'", isString: true}, 
+        solution: {value: false, isString: false},
+        assertFunc: "equal" 
+      },
+      {
+        arg: {value: "'zrjfel:,zklefnzakd'", isString: true}, 
+        solution: {value: false, isString: false},
+        assertFunc: "equal" 
+      },
+      {
+        arg: {value: "'hlbeeykqqqqkyeeblh'", isString: true}, 
+        solution: {value: true, isString: false},
+        assertFunc: "equal" 
+      },
+      {
+        arg: {value: "'abcd'", isString: true}, 
+        solution: {value: false, isString: false},
+        assertFunc: "equal" 
+      },
+      {
+        arg: {value: "'z'", isString: true}, 
+        solution: {value: false, isString: false},
+        assertFunc: "equal"
+      }
     ],
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   },
   {
-    _id: 0,
     functionName: "remove",
     parameterName: "str",
     solutions: [],
@@ -134,26 +234,39 @@ export default [
       content: `Remove all question marks from the end of sentence. Ex: remove("?How are you????") === "?How are you"`
     },
     tests: [
-      { arg: "'?You talkin’ to me????'", solution: "?You talkin’ to me", assertFunc: "equal" },
       {
-        arg: "'Aren’t you a little short for a stormtrooper??'",
-        solution: "Aren’t you a little short for a stormtrooper",
+        arg: {value: "'?You talkin’ to me????'", isString: true},
+        solution: {value: "?You talkin’ to me", isString: true},
         assertFunc: "equal"
       },
-      { arg: "'What’s in the box????'", solution: "What’s in the box", assertFunc: "equal" },
       {
-        arg: "'Shall we play a game???!?'",
-        solution: "Shall we play a game???!",
+        arg: {value: "'Aren’t you a little short for a stormtrooper??'", isString: true},
+        solution: {value: "Aren’t you a little short for a stormtrooper", isString: true},
         assertFunc: "equal"
       },
-      { arg: "'Who ?ya gonna call??'", solution: "Who ?ya gonna call", assertFunc: "equal" },
-      { arg: "''", solution: "", assertFunc: "equal" }
+      {
+        arg: {value: "'What’s in the box????'", isString: true},
+        solution: {value: "What’s in the box", isString: true},
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "'Shall we play a game???!?'", isString: true},
+        solution: {value: "Shall we play a game???!", isString: true},
+        assertFunc: "equal"
+      },
+      {
+        arg: {value: "'Who ?ya gonna call??'", isString: true},
+        solution: {value: "Who ?ya gonna call", isString: true},
+        assertFunc: "equal" 
+      },
+      {
+        arg: {value: "''", isString: true},
+        solution: {value: "", isString: true},
+        assertFunc: "equal"
+      }
     ],
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   },
   {
-    _id: 0,
     functionName: "greatestNumber",
     parameterName: "arr",
     solutions: [],
@@ -162,18 +275,39 @@ export default [
       content: `Given an array of numbers, find the greatest number and return it.`
     },
     tests: [
-      { arg: "[1, 5, -3, 7, -6, 3]", solution: 7, assertFunc: "equal" },
-      { arg: "[1, 5]", solution: 5, assertFunc: "equal" },
-      { arg: "[1, 2, 3.23, 0]", solution: 3.23, assertFunc: "equal" },
-      { arg: "[1, 0, 1, 0, 1000]", solution: 1000, assertFunc: "equal" },
-      { arg: "[-23, 4.34, -3.43, 8, -12]", solution: 8, assertFunc: "equal" },
-      { arg: "[0, -23.5, -3, -8, -12]", solution: 0, assertFunc: "equal" }
+      { 
+        arg: {value: "[1, 5, -3, 7, -6, 3]", isString: false},
+        solution: {value: 7, isString: false},
+        assertFunc: "equal" 
+      },
+      { 
+        arg: {value: "[1, 5]", isString: false},
+        solution: {value: 5, isString: false},
+        assertFunc: "equal" 
+      },
+      { 
+        arg: {value: "[1, 2, 3.23, 0]", isString: false},
+        solution: {value: 3.23, isString: false},
+        assertFunc: "equal" 
+      },
+      { 
+        arg: {value: "[1, 0, 1, 0, 1000]", isString: false},
+        solution: {value: 1000, isString: false},
+        assertFunc: "equal" 
+      },
+      { 
+        arg: {value: "[-23, 4.34, -3.43, 8, -12]", isString: false},
+        solution: {value: 8, isString: false},
+        assertFunc: "equal" 
+      },
+      { 
+        arg: {value: "[0, -23.5, -3, -8, -12]", isString: false},
+        solution: {value: 0, isString: false},
+        assertFunc: "equal"
+      }
     ],
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   },
   {
-    _id: 0,
     functionName: "greatestProduct",
     parameterName: "arr",
     solutions: [],
@@ -182,17 +316,35 @@ export default [
       content: `Given an array of integers, find the pair of adjacent elements that has the largest product and return that product.\nEx: [1, 5, -3, -6, 3, 7] returns 21 (3 * 7)`
     },
     tests: [
-      { arg: "[1, 5, -3, -6, 3, 7]", solution: 21, assertFunc: "equal" },
-      { arg: "[1, 5]", solution: 5, assertFunc: "equal" },
-      { arg: "[1, 2, 3, 0]", solution: 6, assertFunc: "equal" },
-      { arg: "[1, 0, 1, 0, 1000]", solution: 0, assertFunc: "equal" },
-      { arg: "[-23, 4, -3, 8, -12]", solution: -12, assertFunc: "equal" }
+      {
+        arg: {value: "[1, 5, -3, -6, 3, 7]", isString: false},
+        solution: {value: 21, isString: false},
+        assertFunc: "equal" 
+      },
+      {
+        arg: {value: "[1, 5]", isString: false},
+        solution: {value: 5, isString: false},
+        assertFunc: "equal" 
+      },
+      {
+        arg: {value: "[1, 2, 3, 0]", isString: false},
+        solution: {value: 6, isString: false},
+        assertFunc: "equal" 
+      },
+      {
+        arg: {value: "[1, 0, 1, 0, 1000]", isString: false},
+        solution: {value: 0, isString: false},
+        assertFunc: "equal" 
+      },
+      {
+        arg: {value: "[-23, 4, -3, 8, -12]", isString: false},
+        solution: {value: -12, isString: false},
+        assertFunc: "equal"
+      }
     ],
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   }
   //   {
-  //     _id: 0,
+
   //     functionName: "everyPossiblePair",
   //     parameterName: "arr",
   //     solutions: [],

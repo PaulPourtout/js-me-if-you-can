@@ -21,7 +21,7 @@ interface State {
 
 export class HomeComponent extends React.Component<Props, State> {
     private ExagContainer;
-    private serieId:string = "5b6ca66364a4f30651087460";
+    private serieId:string = "5b8fe68da40f800fe2376cd5";
     
     constructor(props) {
         super(props);

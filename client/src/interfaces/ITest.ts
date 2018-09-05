@@ -1,5 +1,8 @@
+import { IInput } from "./IInput";
+
 export interface ITest {
-    arg: any;
-    solution: any;
+    arg: IInput | any;
+    solution: IInput | any;
     assertFunc?: string;
-  }
+}
+

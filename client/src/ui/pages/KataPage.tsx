@@ -45,7 +45,6 @@ export class KataPageComponent extends React.Component<any, State> {
 
     handleDeleteKata = (e, kataId) => {
         e.preventDefault();
-        console.log("KATA ID", kataId)
         fetch(`${URL_API}/katas/${kataId}`, {
             method: "DELETE"
         })

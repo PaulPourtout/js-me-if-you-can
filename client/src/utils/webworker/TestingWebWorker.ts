@@ -14,18 +14,18 @@ module.exports = function (self) {
 
             try {
                 // eval executed in a safe environnement to test user's code
-                const func = eval(`${code} ${kata.functionName}(${test.arg})`)
+                const func = eval(`${code} ${kata.functionName}(${test.arg.value})`)
 
                 // Test user's code
-                assert[test.assertFunc](JSON.stringify(func), JSON.stringify(test.solution));
+                assert[test.assertFunc](JSON.stringify(func), JSON.stringify(test.solution.value));
 
                 // If succeded return a "passed" object
                 result = {
                     success: true,
-                    message: `returned : ${JSON.stringify(test.solution)} / Passed`,
+                    message: `returned : ${JSON.stringify(test.solution.value)} / Passed`,
                     actual: JSON.stringify(func),
-                    expected: JSON.stringify(test.solution),
-                    arg: JSON.stringify(test.arg)
+                    expected: JSON.stringify(test.solution.value),
+                    arg: JSON.stringify(test.arg.value)
                 }
             }
             catch (e) {
