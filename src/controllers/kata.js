@@ -3,6 +3,7 @@ const Kata = require('../models/kata');
 
 const ctrl = {
     getAll : (req, res) => {
+        console.log("THIS IS A LOG TEST")
         Kata.find()
             .then(katas => res.json({success: true, result: katas}))
             .catch(err => res.json({success: false, message: err}))

@@ -17,7 +17,7 @@ mongoose
     .catch(err => console.error("Error", err));
 
 const corsOptions = {
-    origin: 'https://js-me-api.herokuapp.com',
+    origin: 'https://js-me-if-you-can.herokuapp.com',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -37,13 +37,6 @@ apiRouter.use("/series", serieRouter);
 apiRouter.get("/", (req, res) => {
     res.send("JSme API"); 
 });
-
-const coucouRouter = express.Router()
-    .get("/check", (req, res) => {
-    res.send("COUCOU")
-})
-
-apiRouter.use("/coucou", coucouRouter)
 
 app.use("/api", apiRouter);
 

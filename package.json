@@ -11,7 +11,7 @@
     "client": "cd client && npm start",
     "server": "nodemon index.js",
     "server-web": "npm server",
-    "heroku-postbuild": "cd client && npm i && npm run build",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "debug": "node --nolazy --inspect-brk=9229 index.js",
     "test": "jest src",
     "test-watch": "jest --watch src",
