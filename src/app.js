@@ -38,6 +38,10 @@ apiRouter.get("/", (req, res) => {
     res.send("JSme API"); 
 });
 
+apiRouter.get("/coucou", (req, res) => {
+    res.send("COUCOU")
+})
+
 app.use("/api", apiRouter);
 
 // Unknown routes handling
