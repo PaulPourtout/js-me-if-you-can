@@ -15,8 +15,9 @@ const authRouter = express.Router();
     .get("/", tokenUtils.checkToken, tokenUtils.isAdmin, UserCtrl.getAll)
     .post("/", UserCtrl.addOne)
     .post("/:userId/friends/:friendId", tokenUtils.checkToken, UserCtrl.addFriend)
-    .delete("/:userId", tokenUtils.checkToken, tokenUtils.isAdmin, UserCtrl.deleteOne);
-// .put('/:userId', UserCtrl.updateOne) // TODO !!!
+    .delete("/:userId", tokenUtils.checkToken, tokenUtils.isAdmin, UserCtrl.deleteOne)
+    .get("/katas/number/:userId", tokenUtils.checkToken, UserCtrl.getNumberOfKatasDoneByUser)
+    // .put('/:userId', UserCtrl.updateOne) // TODO !!!
 
     kataRouter
     .get("/", tokenUtils.checkToken, KataCtrl.getAll)

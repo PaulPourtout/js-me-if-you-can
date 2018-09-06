@@ -20,7 +20,6 @@ class SeriesListComponent extends React.Component<any, State> {
 
 
     componentWillMount() {
-        console.log(this.props.user)
         fetch(`${URL_API}/series`, {
             headers: {
                 "x-access-token": this.props.getToken()

@@ -172,7 +172,8 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 			method: 'PUT',
 			headers: {
                 "Accept": "application/json",
-                "Content-Type": "application/json"
+				"Content-Type": "application/json",
+				"x-access-token": this.props.getToken()
 			},
 			body: JSON.stringify({
 				solution: {

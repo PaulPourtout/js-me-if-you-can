@@ -11,17 +11,36 @@ import {UserListener} from '../../context/UserProvider';
 import { IUserContext } from '../../interfaces/IUser';
 import {IKata} from '../../interfaces/IKata';
 import { ColorPalette } from '../style/Palette';
+import { URL_API } from '../../utils/config/URL_API';
 const exag = require('../../assets/exag.png');
 
 interface State {
-
+    numberOfKatasDoneByUser: number;
 }
 
 export class DashboardComponent extends React.PureComponent<IUserContext, State> {
-    state = {}
+    state = {
+        numberOfKatasDoneByUser: 0
+    }
+
+    componentDidMount() {
+        fetch(`${URL_API}/users/katas/number/${this.props.user.id}`, {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': `${this.props.getToken()}`
+            }
+        })
+        .then(res => res.json())
+        .then(res => {
+            console.log(res);
+            this.setState({numberOfKatasDoneByUser: res.message.katasDoneByUser})
+        })
+        .catch(err => console.error(err))
+    }
     
     render() {
-        console.log(this.props.user);
         return (
             <PageContainer>
                 <Main>
@@ -39,11 +58,14 @@ export class DashboardComponent extends React.PureComponent<IUserContext, State>
                     </Row>
                 
                     <Row>
+                        <StatCard>
+                            <div style={{color: ColorPalette.tertiary, textAlign: "center", display: "flex", flexDirection: "column", flex: 1, justifyContent: "center"}}>
+                                <p>You finished</p>
+                                <p style={{fontSize: "3rem", margin: "1rem 0"}}>{this.state.numberOfKatasDoneByUser}</p>
+                                <p>katas</p>
+                            </div>
+                        </StatCard>
                         <DashCard>
-                            <h1>Stats and done katas</h1>
-                        </DashCard>
-                        <DashCard>
-                            <h2>Leaderboard</h2>
                             <Table>
                                 <thead>
                                     <tr>
@@ -144,6 +166,19 @@ const Row = styled.div`
 const DashCard = Card.extend`
     flex: 1;
     margin: 1rem;
+`;
+
+const StatCard = DashCard.extend`
+    padding: 1rem 0;
+    background: url(${exag}),
+    linear-gradient(
+        -70deg,
+        ${ColorPalette.fourthiary} 0%,
+        ${ColorPalette.primary} 50%,
+        rgba(0, 0, 0, 0) 100%
+    ),
+    linear-gradient(60deg, ${ColorPalette.primary} 0%, rgba(0, 0, 0, 0) 70%),
+    linear-gradient(-45deg, ${ColorPalette.primary} 0%, rgba(0, 0, 0, 0) 50%);
 `;
 
 const KatasCard = CardHoverable.extend`

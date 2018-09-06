@@ -76,7 +76,21 @@ const ctrl = {
 			});
 		})
 		.catch(err => console.error(err));
-	},
+    },
+    
+    getNumberOfKatasDoneByUser : (req, res, next) => {
+        const { userId } = req.params;
+
+        User.findById(userId)
+        .select("katasDone")
+        .then(katas => res.json({
+            success: true,
+            message: {
+                katasDoneByUser: katas.katasDone.length
+            }
+        }))
+        .catch(err => next({status: 400, message: err}))
+    },
 
 	// updateOne : (req, res) => {
 	//     const {name, username, password, created_at, admin, friends} = req.body;
