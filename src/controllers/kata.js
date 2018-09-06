@@ -40,7 +40,6 @@ const ctrl = {
     
     updateOne : (req, res) => {
         const { functionName, parameterName, description, tests } = req.body;
-        const date = Date.now();
 
         Kata.findOneAndUpdate({_id: req.params.kataId},
             {
@@ -51,19 +50,18 @@ const ctrl = {
     },
 
     addSolution : (req, res) => {
-        const { solution} = req.body;
-        const date = Date.now();
+        const { solution } = req.body;
 
         Kata.findOneAndUpdate({_id: req.params.kataId},
             {
                 $push:{solutions: solution}
             })
             .then(result => res.json({success: true, result: "Solution added"}))
-            .catch(err => res.status(500).json({success: false, result: err}))
+            .catch(err => res.status(500).json({success: false, result: err}));
+
     },
     
     removeSolution : (req, res) => {
-        const date = Date.now();
         Kata.findOneAndUpdate({_id: req.params.kataId},
             {
                 $pull: {solutions: {_id: req.params.solutionId}}

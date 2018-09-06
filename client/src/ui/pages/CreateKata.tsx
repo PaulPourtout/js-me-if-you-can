@@ -10,7 +10,6 @@ import {
 } from "../style/StyledComponents";
 import styled from "styled-components";
 import { IKata } from '../../interfaces/IKata';
-import { EditKata } from '../components/EditKata';
 import { URL_API } from '../../utils/config/URL_API';
 import { IInput } from '../../interfaces/IInput';
 import { NEW_KATA } from "../../utils/NewKataTemplate";
@@ -85,7 +84,7 @@ class CreateKataPageComponent extends React.Component<any, State> {
         else {
             if (isStringValue) {
                 newObject.tests[itemIndex][key].isString = e.target.checked;   
-                console.log({checked: e.target.checked, string: newObject.tests[itemIndex][key].isString});
+                // console.log({checked: e.target.checked, string: newObject.tests[itemIndex][key].isString});
             } else {
                 newObject.tests[itemIndex][key].value = e.target.value;
             }
