@@ -6,7 +6,7 @@ const cors = require("cors");
 const { userRouter, authRouter, kataRouter, serieRouter } = require("./routes");
 require("dotenv").config();
 const mongoose = require("mongoose");
-const DB = process.env.DB || "mongodb://localhost/jsing";
+const DB = process.env.MONGODB_URI || "mongodb://localhost/jsing";
 const apiRouter = express.Router();
 const errorHandler = require("./utils/errorHandler");
 
