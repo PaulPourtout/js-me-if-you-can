@@ -48,7 +48,8 @@ class SeriePageComponent extends React.Component<any, State> {
             method: "DELETE",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': this.props.getToken()
             }
         })
         .then(res => res.json())

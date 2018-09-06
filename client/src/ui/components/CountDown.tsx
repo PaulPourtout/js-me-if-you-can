@@ -4,6 +4,7 @@ import { ColorPalette } from "../style/Palette";
 import {Link} from 'react-router-dom';
 import {Portal} from './Portal';
 import {timeUtils} from '../../utils/timeUtils';
+import { Button } from "../style/StyledComponents";
 
 interface CountDownProps {
 	paused: boolean;
@@ -81,7 +82,13 @@ export class CountDown extends React.Component<CountDownProps, any> {
 			<Portal visible={this.state.gameOver}
 					title="Game Over !!!!"
 			>
-				<Link to="/"></Link>
+				<Link to="/">
+					<Button
+						active
+					>
+						Back to Home
+					</Button>
+				</Link>
 			</Portal>
 		</div>
 		);

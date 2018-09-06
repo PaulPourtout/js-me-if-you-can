@@ -11,29 +11,29 @@ const serieRouter = express.Router();
 const authRouter = express.Router();
 
     userRouter
-    .get("/:userId", UserCtrl.getById)
-    .get("/", UserCtrl.getAll)
+    .get("/:userId", tokenUtils.checkToken, UserCtrl.getById)
+    .get("/", tokenUtils.checkToken, tokenUtils.isAdmin, UserCtrl.getAll)
     .post("/", UserCtrl.addOne)
     .post("/:userId/friends/:friendId", tokenUtils.checkToken, UserCtrl.addFriend)
-    .delete("/:userId", UserCtrl.deleteOne);
+    .delete("/:userId", tokenUtils.checkToken, tokenUtils.isAdmin, UserCtrl.deleteOne);
 // .put('/:userId', UserCtrl.updateOne) // TODO !!!
 
     kataRouter
-    .get("/", KataCtrl.getAll)
-    .post("/", KataCtrl.addOne)
-    .put("/:kataId", KataCtrl.updateOne)
-    .delete("/:kataId", KataCtrl.deleteOne)
+    .get("/", tokenUtils.checkToken, KataCtrl.getAll)
+    .post("/", tokenUtils.checkToken, tokenUtils.isAdmin, KataCtrl.addOne)
+    .put("/:kataId", tokenUtils.checkToken, tokenUtils.isAdmin, KataCtrl.updateOne)
+    .delete("/:kataId", tokenUtils.checkToken, tokenUtils.isAdmin, KataCtrl.deleteOne)
     .get("/:kataId", KataCtrl.getById)
-    .put("/solutions/:kataId", KataCtrl.addSolution)
-    .put("/solutions/:kataId/numb/:solutionId", KataCtrl.removeSolution)
-    .get("/user/:authorId", KataCtrl.findUserKatas);
+    .put("/solutions/:kataId", tokenUtils.checkToken, KataCtrl.addSolution)
+    .put("/solutions/:kataId/numb/:solutionId", tokenUtils.checkToken, tokenUtils.isAdmin, KataCtrl.removeSolution)
+    .get("/user/:authorId", tokenUtils.checkToken, KataCtrl.findUserKatas);
 
     serieRouter
-    .get("/", SerieCtrl.getAll)
-    .post("/", SerieCtrl.addOne)
+    .get("/", tokenUtils.checkToken, SerieCtrl.getAll)
+    .post("/", tokenUtils.checkToken, tokenUtils.isAdmin, SerieCtrl.addOne)
     .get("/:serieId", SerieCtrl.getById)
-    .put("/:serieId", SerieCtrl.updateOne)
-    .delete("/:serieId", SerieCtrl.deleteOne)
+    .put("/:serieId", tokenUtils.checkToken, tokenUtils.isAdmin, SerieCtrl.updateOne)
+    .delete("/:serieId", tokenUtils.checkToken, tokenUtils.isAdmin, SerieCtrl.deleteOne)
 
     authRouter.post("/", Auth.login);
 

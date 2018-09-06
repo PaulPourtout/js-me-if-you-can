@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Button, PageContainer, Form, Card, CardTitle, CardContent } from "../style/StyledComponents";
+import { 
+    Button,
+    PageContainer,
+    Form,
+    Card,
+    CardTitle,
+    CardContent
+} from "../style/StyledComponents";
 import { IKata } from "../../interfaces/IKata";
 import { SearchInput } from "../components/SearchInput";
 import {InputText} from "../components/InputText";
@@ -7,6 +14,7 @@ import styled from "styled-components";
 import { ColorPalette } from "../style/Palette";
 import { URL_API } from "../../utils/config/URL_API";
 import { IInput } from "../../interfaces/IInput";
+import { UserListener } from "../../context/UserProvider";
 
 interface ISerie {
     title: string;
@@ -27,7 +35,7 @@ interface State {
 }
 
 
-export class CreateSerie extends React.Component<any, State> {
+class CreateSerieComponent extends React.Component<any, State> {
     private IS_NEW_SERIE: boolean = this.props.match.params.id === "new";
     private newSerie: INewSerie = {
         title: { label: "title", value: "", type: "text" },
@@ -57,7 +65,7 @@ export class CreateSerie extends React.Component<any, State> {
         .then(res => res.json())
         .then(res => this.setState({
             allKatas: res.result
-        }, () => console.log(this.state.allKatas)))
+        }))
         .catch(err => console.error(err))
     }
 
@@ -156,24 +164,23 @@ export class CreateSerie extends React.Component<any, State> {
             description: newSerie.description.value,
             katas: newSerie.katas
         }
-        console.log(newSerie)
+
         const URL = isNew
             ? `${URL_API}/series`
             : `${URL_API}/series/${this.props.match.params.id}`;
         
         const METHOD = isNew ? "POST" : "PUT";
 
-        console.log(serie)
         fetch(URL, {
             method: METHOD,
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': this.props.getToken()
             },
             body: JSON.stringify(serie)
         })
         .then(res => res.json())
-        .then(res => console.log(res))
         .catch(err => console.error(err))
     }
 
@@ -220,6 +227,9 @@ export class CreateSerie extends React.Component<any, State> {
         )
     }
 }
+
+export const CreateSerie = UserListener(CreateSerieComponent);
+
 
 
 interface IListItem {

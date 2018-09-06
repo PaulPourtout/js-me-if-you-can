@@ -1,19 +1,18 @@
 import * as React from 'react';
 import {IKata} from '../../interfaces/IKata';
-// import styled from 'styled-components';
-// import Katas from '../../utils/Katas';
 import {Link} from 'react-router-dom';
 import { PageContainer, Card } from '../style/StyledComponents';
 import {LinksList} from "../components/LinksList";
 import { ISerie } from '../../interfaces/ISerie';
 import { URL_API } from '../../utils/config/URL_API';
+import { UserListener } from '../../context/UserProvider';
 
 interface State {
     loading: boolean;
     series: ISerie[];
 }
 
-export class SeriesList extends React.Component<any, State> {
+class SeriesListComponent extends React.Component<any, State> {
     state = {
         series: [],
         loading: true
@@ -21,9 +20,14 @@ export class SeriesList extends React.Component<any, State> {
 
 
     componentWillMount() {
-        fetch(`${URL_API}/series`)
+        console.log(this.props.user)
+        fetch(`${URL_API}/series`, {
+            headers: {
+                "x-access-token": this.props.getToken()
+            }
+        })
             .then(res => res.json())
-            .then(series => this.setState({series: series.result, loading: false}, () => console.log('series', this.state.series)))
+            .then(series => this.setState({series: series.result, loading: false}))
             .catch(err => console.log(err))
     }
 
@@ -38,3 +42,5 @@ export class SeriesList extends React.Component<any, State> {
         );
     }
 } 
+
+export const SeriesList = UserListener(SeriesListComponent)

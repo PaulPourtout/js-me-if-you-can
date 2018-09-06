@@ -10,8 +10,13 @@ const userSchema = new Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     admin: Boolean,
-    katasDone: [Array],
-    friends: Array
+    katasDone: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Kata'
+        }
+    ],
+    friends: Array,
 }, {
     timestamps: true,
     strict: true

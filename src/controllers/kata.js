@@ -1,9 +1,9 @@
 const express = require('express');
 const Kata = require('../models/kata');
+const User = require('../models/user');
 
 const ctrl = {
     getAll : (req, res) => {
-        console.log("THIS IS A LOG TEST")
         Kata.find()
             .then(katas => res.json({success: true, result: katas}))
             .catch(err => res.json({success: false, message: err}))
@@ -57,8 +57,18 @@ const ctrl = {
             {
                 $push:{solutions: solution}
             })
+            .then(result => {
+                User.findOneAndUpdate({ _id: solution.authorId },
+                    {
+                        $addToSet: {katasDone: req.params.kataId}
+                    })
+                    .then(ne => result)
+                    .catch(err => res.status(500).json({success: false, result: err}));
+            })
             .then(result => res.json({success: true, result: "Solution added"}))
             .catch(err => res.status(500).json({success: false, result: err}));
+        
+       
 
     },
     

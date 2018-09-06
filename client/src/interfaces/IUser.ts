@@ -12,4 +12,5 @@ export interface IUserContext {
     user:IUser;
     newUser: () => void;
     logout: () => void;
+    getToken: () => void;
 }

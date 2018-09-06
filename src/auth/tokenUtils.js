@@ -7,8 +7,9 @@ module.exports = {
         expiresIn: tokenExpiration
         });
     },
+
     isAdmin: (req, res, next) => {
-        if (req.decoded.isAdmin) {
+        if (req.decoded.admin) {
         next();
         } else {
         return res.status(401).json({

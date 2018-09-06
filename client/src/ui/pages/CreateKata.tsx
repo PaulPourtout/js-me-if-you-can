@@ -136,7 +136,8 @@ class CreateKataPageComponent extends React.Component<any, State> {
             method: REQUETE_TYPE,
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': this.props.getToken()
             },
             body: JSON.stringify(kataSchema)
         })
@@ -176,7 +177,6 @@ class CreateKataPageComponent extends React.Component<any, State> {
 
     renderForm = (managedObject, inputIndex?: number) => Object.keys(managedObject).map((key, index) => {
         let {label, type, value, isString} = managedObject[key];
-        console.log(managedObject[key])
         return (
             <React.Fragment key={index}>
                 <Label htmlFor={key}>{label}</Label>

@@ -7,13 +7,14 @@ import { PageContainer, Card } from '../style/StyledComponents';
 import { GlobalStyle } from '../style/GlobalStyle';
 import {LinksList} from "../components/LinksList";
 import { URL_API } from '../../utils/config/URL_API';
+import { UserListener } from '../../context/UserProvider';
 
 interface State {
     loading: boolean;
     katas: IKata[];
 }
 
-export class KatasList extends React.Component<any, State> {
+class KatasListComponent extends React.Component<any, State> {
     state = {
         katas: [],
         loading: true
@@ -21,9 +22,13 @@ export class KatasList extends React.Component<any, State> {
 
 
     componentWillMount() {
-        fetch(`${URL_API}/katas`)
+        fetch(`${URL_API}/katas`, {
+            headers: {
+                "x-access-token": this.props.getToken()
+            }
+        })
             .then(res => res.json())
-            .then(katas => this.setState({katas: katas.result, loading: false}, () => console.log('katas', this.state.katas)))
+            .then(katas => this.setState({katas: katas.result, loading: false}))
             .catch(err => console.log(err))
     }
 
@@ -37,4 +42,6 @@ export class KatasList extends React.Component<any, State> {
             </PageContainer>
         );
     }
-} 
+}
+
+export const KatasList = UserListener(KatasListComponent)

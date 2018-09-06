@@ -76,7 +76,6 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 
 		this.fetchKatas(mode, kataOrSerieId)
 		.then(res => {
-			console.log(res);
 			if (!res.success) {
 				console.error(res.message)
 			}
@@ -185,7 +184,6 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 			})
 		})
 		.then(res => res.json())
-		.then(res => console.log('FETCH RESULT', res))
 		.catch(err => console.log(err))
 	}
 
@@ -226,9 +224,7 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 	}
 
 	handleChooseMode = async (mode) => {
-		console.log('old game mode : ', this.gameMode)
 		this.gameMode = mode;
-		console.log('new game mode : ', this.gameMode)
 		await this.toggleChooseModal();
 		if (this.gameMode === 'countdown') {
 			this.setState({countdownPaused: false}, () => {
