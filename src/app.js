@@ -38,9 +38,12 @@ apiRouter.get("/", (req, res) => {
     res.send("JSme API"); 
 });
 
-apiRouter.get("/coucou", (req, res) => {
+const coucouRouter = express.Router()
+    .get("/check", (req, res) => {
     res.send("COUCOU")
 })
+
+apiRouter.use("/coucou", coucouRouter)
 
 app.use("/api", apiRouter);
 
