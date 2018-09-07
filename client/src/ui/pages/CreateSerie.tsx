@@ -51,7 +51,11 @@ class CreateSerieComponent extends React.Component<any, State> {
 
     componentWillMount() {
         if (!this.IS_NEW_SERIE) {
-            fetch(`${URL_API}/series/${this.props.match.params.id}`)
+            fetch(`${URL_API}/series/${this.props.match.params.id}`, {
+                headers: {
+                    "x-access-token": this.props.getToken()
+                }
+            })
             .then(res => res.json())
             .then(res => {
                 if (res.result) {
@@ -61,7 +65,11 @@ class CreateSerieComponent extends React.Component<any, State> {
             .catch(err => console.error(err))
         }
 
-        fetch(`${URL_API}/katas`)
+        fetch(`${URL_API}/katas`, {
+            headers: {
+                "x-access-token": this.props.getToken()
+            }
+        })
         .then(res => res.json())
         .then(res => this.setState({
             allKatas: res.result
@@ -115,7 +123,8 @@ class CreateSerieComponent extends React.Component<any, State> {
                                 <div style={{flex: 1}}>
                                     <p>Current katas :</p>
                                     {
-                                        this.renderSelectedKatas(this.state.newSerie.katas)
+                                        this.state.newSerie && this.state.allKatas &&
+                                        this.renderSelectedKatas(this.state.newSerie.katas, this.state.allKatas)
                                     }
                                 </div>
 
@@ -206,8 +215,8 @@ class CreateSerieComponent extends React.Component<any, State> {
         this.setState({newSerie})
     }
 
-    renderSelectedKatas = (selectedKatasId: string[]) => {
-        const selectedKatas = this.state.allKatas
+    renderSelectedKatas = (selectedKatasId: string[], allKatas: IKata[]) => {
+        const selectedKatas = allKatas
             .filter((kata: IKata) => {
                 return selectedKatasId.indexOf(kata._id) !== -1
             }

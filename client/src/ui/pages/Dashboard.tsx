@@ -106,10 +106,10 @@ export class DashboardComponent extends React.PureComponent<IUserContext, State>
                     {
                         this.props.user.admin &&
                         <Row>
-                            <Link style={{textDecoration: "none", display: "flex", flex: 1}} to="/admin">
-                                <CardHoverable>
+                            <Link style={{margin: "1rem", textDecoration: "none", display: "flex", flex: 1}} to="/admin">
+                                <KatasCard>
                                     <h2>ADMIN</h2>
-                                </CardHoverable>
+                                </KatasCard>
                             </Link>
                         </Row>
                     }
