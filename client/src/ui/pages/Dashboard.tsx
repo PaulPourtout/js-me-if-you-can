@@ -65,7 +65,7 @@ export class DashboardComponent extends React.PureComponent<IUserContext, State>
                                 <p>katas</p>
                             </div>
                         </StatCard>
-                        <DashCard>
+                        <DashCard style={{ background: gradientBackground }}>
                             <Table>
                                 <thead>
                                     <tr>
@@ -135,8 +135,7 @@ const Table = styled.table`
 `;
 
 const Th = styled.th`
-    background: url(${exag});
-    background-color: ${ColorPalette.primary};
+    /* background-color: ${ColorPalette.primary}; */
     color: ${ColorPalette.tertiary};
     padding: 1rem;
     text-align: center;
@@ -148,7 +147,7 @@ const Td = styled.td`
 `;
 
 const Tr = styled.tr`
-    background-color: ${ColorPalette.underBackground};
+    background-color: rgba(255,255,255, 0.7);
     border-bottom: 1px solid ${ColorPalette.secondary};
 `;
 
@@ -166,6 +165,7 @@ const Row = styled.div`
 const DashCard = Card.extend`
     flex: 1;
     margin: 1rem;
+    background-color: rgba(0,0,0,1);
 `;
 
 const StatCard = DashCard.extend`
@@ -197,6 +197,7 @@ const KatasCard = CardHoverable.extend`
 		linear-gradient(-45deg, ${ColorPalette.secondary} 0%, rgba(0, 0, 0, 0) 50%);
 `
 
+
 const SeriesCard = CardHoverable.extend`
     margin: 0;
     h2 {
@@ -212,3 +213,15 @@ const SeriesCard = CardHoverable.extend`
 		linear-gradient(130deg, ${ColorPalette.fourthiary} 0%, rgba(0, 0, 0, 0) 30%),
 		linear-gradient(-45deg, ${ColorPalette.primary} 0%, rgba(0, 0, 0, 0) 50%);
 `
+
+const gradientBackground = `
+    url(${exag}),
+    linear-gradient(
+        45deg,
+        ${ColorPalette.primary} 0%,
+        ${ColorPalette.primary} 50%,
+        rgba(0, 0, 0, 0) 100%
+    ),
+    linear-gradient(130deg, ${ColorPalette.fourthiary} 0%, rgba(0, 0, 0, 0) 30%),
+    linear-gradient(-45deg, ${ColorPalette.primary} 0%, rgba(0, 0, 0, 0) 50%)
+`;

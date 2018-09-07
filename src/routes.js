@@ -17,6 +17,7 @@ const authRouter = express.Router();
     .post("/:userId/friends/:friendId", tokenUtils.checkToken, UserCtrl.addFriend)
     .delete("/:userId", tokenUtils.checkToken, tokenUtils.isAdmin, UserCtrl.deleteOne)
     .get("/katas/number/:userId", tokenUtils.checkToken, UserCtrl.getNumberOfKatasDoneByUser)
+    .get("/best/:returnedItems", UserCtrl.getBestUsers)
     // .put('/:userId', UserCtrl.updateOne) // TODO !!!
 
     kataRouter

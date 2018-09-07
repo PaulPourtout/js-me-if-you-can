@@ -78,6 +78,24 @@ const ctrl = {
 		.catch(err => console.error(err));
     },
     
+    getBestUsers : (req, res, next) => {
+        console.log("limit", req.params.returnedItems)
+        User.aggregate([
+            {
+                $project: {
+                    username: 1,
+                    numberOfKatasDone: {
+                        $size: { "$ifNull": [ "$katasDone", [] ] }
+                    }
+                }
+            },
+            { $sort: {numberOfKatasDone: -1} },
+            { $limit: parseInt(req.params.returnedItems) }
+        ])
+        .then(result => res.send(result))
+        .catch(err => next({status: 400, message: err}))
+    },
+
     getNumberOfKatasDoneByUser : (req, res, next) => {
         const { userId } = req.params;
 
