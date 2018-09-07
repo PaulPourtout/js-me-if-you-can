@@ -79,8 +79,11 @@ const ctrl = {
     },
     
     getBestUsers : (req, res, next) => {
-        console.log("limit", req.params.returnedItems)
-        User.aggregate([
+        User
+        .aggregate([
+            {
+                $match: {"admin": false}
+            },
             {
                 $project: {
                     username: 1,

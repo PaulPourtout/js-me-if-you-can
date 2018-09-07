@@ -16,13 +16,17 @@ const exag = require('../../assets/exag.png');
 
 interface State {
     numberOfKatasDoneByUser: number;
+    bestUsers: any[];
 }
 
 export class DashboardComponent extends React.PureComponent<IUserContext, State> {
     state = {
-        numberOfKatasDoneByUser: 0
+        numberOfKatasDoneByUser: 0,
+        bestUsers: []
     }
 
+    private LEADERBOARD_NUMBER_LIMIT = 5; 
+    
     componentDidMount() {
         fetch(`${URL_API}/users/katas/number/${this.props.user.id}`, {
             method: "GET",
@@ -34,10 +38,16 @@ export class DashboardComponent extends React.PureComponent<IUserContext, State>
         })
         .then(res => res.json())
         .then(res => {
-            console.log(res);
             this.setState({numberOfKatasDoneByUser: res.message.katasDoneByUser})
         })
-        .catch(err => console.error(err))
+        .catch(err => console.error(err));
+        
+        fetch(`${URL_API}/users/best/${this.LEADERBOARD_NUMBER_LIMIT}`)
+        .then(res => res.json())
+        .then(res => {
+            this.setState({bestUsers: res})
+        })
+        .catch(err => console.error(err));
     }
     
     render() {
@@ -75,26 +85,19 @@ export class DashboardComponent extends React.PureComponent<IUserContext, State>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <Tr>
-                                        <Td>01</Td>
-                                        <Td>Polo</Td>
-                                        <Td>2345</Td>
-                                    </Tr>
-                                    <Tr>
-                                        <Td>01</Td>
-                                        <Td>Polo</Td>
-                                        <Td>2345</Td>
-                                    </Tr>
-                                    <Tr>
-                                        <Td>01</Td>
-                                        <Td>Polo</Td>
-                                        <Td>2345</Td>
-                                    </Tr>
-                                    <Tr>
-                                        <Td>01</Td>
-                                        <Td>Polo</Td>
-                                        <Td>2345</Td>
-                                    </Tr>
+                                    {
+                                        this.state.bestUsers.map(({username, numberOfKatasDone}, index) => (
+                                            <Tr key={`${index}-${username}`}>
+                                                <Td>{index + 1}</Td>
+                                                <Td>{username}</Td>
+                                                <Td>{numberOfKatasDone}</Td>
+                                            </Tr>
+                                        ))
+                                    }
+                                    {
+                                        (this.state.bestUsers.length < this.LEADERBOARD_NUMBER_LIMIT) &&
+                                        this.getEmptyLeaderboardUser(this.LEADERBOARD_NUMBER_LIMIT, this.state.bestUsers.length)
+                                    }
                                 </tbody>
                             </Table>
                         </DashCard>
@@ -113,6 +116,25 @@ export class DashboardComponent extends React.PureComponent<IUserContext, State>
 
                 </Main>
             </PageContainer>
+        )
+    }
+
+    getEmptyLeaderboardUser = (limit:number, usersNumber: number) => {
+        const numberToRender = limit - usersNumber;
+        const emptyArr = Array.apply(null, Array(numberToRender))
+
+        return (
+            <React.Fragment>
+                {
+                    emptyArr.map((emptyUser, index) => (
+                        <Tr key={index}>
+                            <Td>--</Td>
+                            <Td>--</Td>
+                            <Td>--</Td>
+                        </Tr>
+                    ))   
+                }
+            </React.Fragment>
         )
     }
 }
