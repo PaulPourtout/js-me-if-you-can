@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { UserListener } from "../../context/UserProvider";
 import styled from "styled-components";
 import { ColorPalette } from "../style/Palette";
@@ -75,9 +75,9 @@ export class HeaderComponent extends React.Component <Props, any> {
 				</Link>
 				{ user && user.authenticated && (
 					<MainNav>
-						<Link style={GlobalStyle.NavLinkStyle} to="/dashboard">Dashboard</Link>
-						<Link style={GlobalStyle.NavLinkStyle} to="/kataslist">Katas</Link>
-						<Link style={GlobalStyle.NavLinkStyle} to="/serieslist">Series</Link>
+						<StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
+						<StyledNavLink to="/kataslist">Katas</StyledNavLink>
+						<StyledNavLink to="/serieslist">Series</StyledNavLink>
 					</MainNav>
 				)}
 
@@ -111,6 +111,22 @@ export class HeaderComponent extends React.Component <Props, any> {
 		);
 	};
 }
+
+const activeClassName = 'active';
+
+const StyledNavLink = styled(NavLink).attrs({
+	activeClassName: activeClassName,
+})`
+	color: rgba(255,255,255,0.8);
+	text-decoration: none;
+	font-size: 1rem;
+	margin: 0.2rem;
+	z-index: 100;
+
+	&.${activeClassName} {
+    	color: ${ColorPalette.tertiary};
+	}
+`
 
 const NavHeader = styled.nav`
 	background-color: ${ColorPalette.primary};
