@@ -15,6 +15,7 @@ import { ColorPalette } from "../style/Palette";
 import { URL_API } from "../../utils/config/URL_API";
 import { IInput } from "../../interfaces/IInput";
 import { UserListener } from "../../context/UserProvider";
+import { history } from "../../Router";
 
 interface ISerie {
     title: string;
@@ -189,7 +190,10 @@ class CreateSerieComponent extends React.Component<any, State> {
             },
             body: JSON.stringify(serie)
         })
-        .then(res => res.json())
+        .then(res => {
+            res.json()
+            history.push("/serieslist")
+        })
         .catch(err => console.error(err))
     }
 

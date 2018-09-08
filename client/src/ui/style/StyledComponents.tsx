@@ -94,11 +94,11 @@ export const Card = styled.article`
 
 export const CardHoverable = styled.section`
     background-color: ${ColorPalette.background};
+    border-radius: 2px;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
     padding: 4rem 1rem;
     flex: 1;
     margin: 1rem;
-    box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
-    border-radius: 2px;
     transition: 0.3s;
     
     &:hover {

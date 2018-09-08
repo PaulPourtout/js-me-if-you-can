@@ -181,6 +181,10 @@ const Main = styled.main`
 const Row = styled.div`
     display: flex;
     flex-wrap: wrap;
+
+    @media (max-width: 400px) {
+        flex-direction: column;
+    }
 `;
 
 

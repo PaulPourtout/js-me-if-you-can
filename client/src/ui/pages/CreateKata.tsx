@@ -15,7 +15,8 @@ import { IInput } from '../../interfaces/IInput';
 import { NEW_KATA } from "../../utils/NewKataTemplate";
 import { INewKata } from "../../interfaces/INewKata";
 import { ITest } from "../../interfaces/ITest";
-import {ColorPalette} from "../style/Palette";
+import { ColorPalette } from "../style/Palette";
+import { history } from "../../Router";
 
 interface Props {
     kata: INewKata
@@ -142,7 +143,10 @@ class CreateKataPageComponent extends React.Component<any, State> {
             body: JSON.stringify(kataSchema)
         })
         .then(res => res.json())
-        .then(res => console.log("result",res))
+        .then(res => {
+            console.log("result",res)
+            history.push('/kataslist')   
+        })
         .catch(err => console.error(err))
     }
 
