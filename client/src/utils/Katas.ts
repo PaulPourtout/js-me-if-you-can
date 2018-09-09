@@ -154,27 +154,27 @@ export default [
     tests: [
       {
         arg: {value: "'Hello'", isString: true},
-        solution: "olleH",
+        solution: {value: "olleH", isString: true},
         assertFunc: "equal"
       },
       {
         arg: {value: "''", isString: true},
-        solution: "",
+        solution: {value: "", isString: true},
         assertFunc: "equal"
       },
       {
         arg: {value: "'Twelves Monkeys'", isString: true},
-        solution: "syeknoM sevlewT",
+        solution: {value: "syeknoM sevlewT", isString: true},
         assertFunc: "equal"
       },
       {
         arg: {value: "'There is no spoon'", isString: true},
-        solution: "noops on si erehT",
+        solution: {value: "noops on si erehT", isString: true},
         assertFunc: "equal"
       },
       {
         arg: {value: "'123456'", isString: true},
-        solution: "654321",
+        solution: {value: "654321", isString: true},
         assertFunc: "equal"
       }
     ],
