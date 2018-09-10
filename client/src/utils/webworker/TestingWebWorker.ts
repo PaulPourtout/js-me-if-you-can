@@ -13,6 +13,7 @@ module.exports = function (self) {
             let result: ITestResult;
 
             try {
+                console.log(test);
                 // eval executed in a safe environnement to test user's code
                 const func = eval(`${code} ${kata.functionName}(${test.arg.value})`)
 
@@ -33,9 +34,10 @@ module.exports = function (self) {
                 const {message, actual, expected} = e;
                 result = {
                     success: false,
-                    message, actual: `${JSON.stringify(actual)}`,
+                    message,
+                    actual: `${JSON.stringify(actual)}`,
                     expected: JSON.stringify(expected),
-                    arg: JSON.stringify(test.arg)
+                    arg: JSON.stringify(test.arg.value)
                 };
             }
             results.push(result);

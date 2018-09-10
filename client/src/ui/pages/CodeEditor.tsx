@@ -81,19 +81,18 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 			}
 			else {
 				let katasResult = mode === "katas" ? [res.result] : res.result.katas;
+				const currentKata = katasResult[this.state.currentKataIndex];
+				console.log(currentKata);
 				this.setState({
 					katas: katasResult,
 					loading: false,
 					// Create empty function displayed in the code editor
-					currentValue: `function ${katasResult[this.state.currentKataIndex].functionName} (${katasResult[this.state.currentKataIndex].parameterName}) {
-	// Your code goes here
-}` 
+					currentValue: this.createBaseFunction(currentKata.functionName, currentKata.parameterName)
 				});
 				this.startKata = Date.now();
 			}
 		}) 
 
-		const currentKata = this.state.katas[this.state.currentKataIndex];
 		// Create instance of TestingWebWorker
 		this.testWorker = Worker(require.resolve("../../utils/webworker/TestingWebWorker"));
 
@@ -261,35 +260,36 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 			{
 				title: "Console",
 				content: (
-				<CodeTest
-					code={currentValue}
-					handlePassedKata={this.handlePassedKata}
-					exercise={katas[currentKataIndex]}
-					testResults={testResults}
-					handleDisplayTestResult={this.handleDisplayTestResult}
-				/>
+					<CodeTest
+						code={currentValue}
+						handlePassedKata={this.handlePassedKata}
+						exercise={katas[currentKataIndex]}
+						testResults={testResults}
+						handleDisplayTestResult={this.handleDisplayTestResult}
+					/>
 				)
 			}
 		];
 
 		return (
 		<EditorContainer>
-			<EditorHeader ref={ref => this.EditorHeader = ref}
-			currentKataIndex={currentKataIndex}
-			currentKataPassed={currentKataPassed}
-			gameMode={this.gameMode}
-			maxLevel={katas.length - 1}
-			handleGoToNextKata={this.handleGoToNextKata}
-			countdownPaused={countdownPaused}
-			countDownStartingTime={COUNTDOWN_STARTING_TIME}
+			<EditorHeader
+				ref={ref => this.EditorHeader = ref}
+				currentKataIndex={currentKataIndex}
+				currentKataPassed={currentKataPassed}
+				gameMode={this.gameMode}
+				maxLevel={katas.length - 1}
+				handleGoToNextKata={this.handleGoToNextKata}
+				countdownPaused={countdownPaused}
+				countDownStartingTime={COUNTDOWN_STARTING_TIME}
 			/>
 
 			<main style={{ display: "flex", flex: 1 }}>
 			<TabBarContainer>
 				<TabBar
-				tabs={tabs}
-				active={activeTab}
-				onSelectTab={this.handleChangeActiveTab}
+					tabs={tabs}
+					active={activeTab}
+					onSelectTab={this.handleChangeActiveTab}
 				/>
 				{ currentKataPassed && currentKataIndex < katas.length - 1 &&
 					<NextKataMessage onClick={this.handleGoToNextKata}>
@@ -299,26 +299,34 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 			</TabBarContainer>
 			<div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
 				<SectionTitle>Solution</SectionTitle>
-				<ACE onChange={this.handleCodeEditorValue}
+				<ACE
+					onChange={this.handleCodeEditorValue}
 					value={currentValue}
-					width={"auto"} />
+					width={"auto"}
+				/>
 				<Button
-				active
-				fullWidth
-				onClick={() =>
-					this.launchWorker({code: currentValue, kata: katas[currentKataIndex]}, this.testWorker)
-				}
+					active
+					fullWidth
+					onClick={
+						() => this.launchWorker({code: currentValue, kata: katas[currentKataIndex]}, this.testWorker)
+					}
 				>
-				RUN CODE (CTRL + Enter)
+					RUN CODE (CTRL + Enter)
 				</Button>
 			</div>
 			</main>
 
-			<Portal visible={this.state.chooseModeModal} title="Choose your game mode">
+			<Portal
+				visible={this.state.chooseModeModal}
+				title="Choose your game mode"
+			>
 				{this.renderChooseModeModal()}
 			</Portal>
 			
-			<Portal visible={this.state.finishModal} title="You did it">
+			<Portal
+				visible={this.state.finishModal}
+				title="You did it"
+			>
 				<p>Well done you finished the game !</p>
 				{
 					!this.props.user.authenticated &&
@@ -345,7 +353,8 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 		]
 
 		const modeButtons = gameChoices.map((choice, index) => (
-			<Button key={`game-mode-choice-${index}`}
+			<Button
+				key={`game-mode-choice-${index}`}
 				active
 				fullWidth
 				style={{marginBottom: "2rem"}}
