@@ -82,7 +82,7 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 			else {
 				let katasResult = mode === "katas" ? [res.result] : res.result.katas;
 				const currentKata = katasResult[this.state.currentKataIndex];
-				console.log(currentKata);
+				// console.log(currentKata);
 				this.setState({
 					katas: katasResult,
 					loading: false,
@@ -184,7 +184,7 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 			})
 		})
 		.then(res => res.json())
-		.catch(err => console.log(err))
+		.catch(err => console.error(err))
 	}
 
 	handleChangeActiveTab = tabIndex => {

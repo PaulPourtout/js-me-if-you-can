@@ -13,7 +13,7 @@ module.exports = function (self) {
             let result: ITestResult;
 
             try {
-                console.log(test);
+                // console.log(test);
                 // eval executed in a safe environnement to test user's code
                 const func = eval(`${code} ${kata.functionName}(${test.arg.value})`)
 
