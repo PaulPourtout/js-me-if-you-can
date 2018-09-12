@@ -35,7 +35,7 @@ export class TabBar extends React.Component<Props, State> {
           ))}
         </div>
         <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          {tabs[active].content}
+          {tabs[active] ? tabs[active].content : tabs[0].content}
         </div>
       </div>
     );

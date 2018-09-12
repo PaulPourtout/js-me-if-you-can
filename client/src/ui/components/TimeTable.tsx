@@ -40,11 +40,11 @@ export const TimeTable = ({katasTitle, times}:ITimeTableProps) => {
                     const timeFormated = timeUtils.formatTime(exerciseTime);
                     const {minutes, secondes, millisecondes} = timeFormated;
                     passedTime =+ time;
-                    return <Cell>{`${minutes}m${secondes}s${millisecondes}ms`}</Cell>
+                    return <Cell>{`${minutes}m${secondes}s`}</Cell>
                 })
             }
             <li>
-                <SectionTitle>{`${formatedTotalTime.minutes}m${formatedTotalTime.secondes}s${formatedTotalTime.millisecondes}ms`}</SectionTitle>
+                <SectionTitle>{`${formatedTotalTime.minutes}m${formatedTotalTime.secondes}s`}</SectionTitle>
             </li>
         </ul>
     </div>

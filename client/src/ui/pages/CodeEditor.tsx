@@ -21,6 +21,7 @@ import { URL_API } from "../../utils/config/URL_API";
 
 interface State {
 	loading: boolean;
+	windowWidth?: number;
 	currentValue: string;
 	currentKataIndex: number;
 	currentKataPassed: boolean;
@@ -83,9 +84,11 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 				let katasResult = mode === "katas" ? [res.result] : res.result.katas;
 				const currentKata = katasResult[this.state.currentKataIndex];
 				// console.log(currentKata);
+				
 				this.setState({
 					katas: katasResult,
 					loading: false,
+					windowWidth: window.innerWidth,
 					// Create empty function displayed in the code editor
 					currentValue: this.createBaseFunction(currentKata.functionName, currentKata.parameterName)
 				});
@@ -105,10 +108,21 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 			const isAllPassed = e.data.every(el => el.success);
 			isAllPassed ? this.handlePassedKata() : null;
 		});
+
+		window.addEventListener("resize", this.handleResizeEditor)
 	}
 
 	componentWillUnmount() {
 		document.removeEventListener("keydown", this.launchTest);
+	}
+
+
+	handleResizeEditor = (e) => {
+		// console.log(window.innerWidth)
+		if ((window.innerWidth <= 800 && this.state.windowWidth > 800)
+		|| (window.innerWidth >= 800 && this.state.windowWidth < 800)) {
+			this.setState({windowWidth: window.innerWidth})
+		}
 	}
 
 	fetchKatas = (mode, id) => {
@@ -246,10 +260,13 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 			katas,
 			testResults,
 			countdownPaused,
-			activeTab
+			activeTab,
+			windowWidth
 		} = this.state;
 		const {mode} = this.props.match.params;
-
+		
+		const isSmallWindow = windowWidth <= 800;
+		
 		if (loading) return <div></div>;
 
 		const tabs = [
@@ -271,6 +288,33 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 			}
 		];
 
+		if (isSmallWindow) {
+			tabs.push({
+				title: "Editor",
+				content: (
+					<div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+						{
+							!isSmallWindow &&
+							<SectionTitle>Editor</SectionTitle>
+						}
+						<ACE
+							onChange={this.handleCodeEditorValue}
+							value={currentValue}
+							width={"auto"}
+						/>
+						<Button
+							active
+							fullWidth
+							onClick={
+								() => this.launchWorker({code: currentValue, kata: katas[currentKataIndex]}, this.testWorker)
+							}
+						>
+							RUN CODE (CTRL + Enter)
+						</Button>
+					</div>
+				)
+			})
+		}
 		return (
 		<EditorContainer>
 			<EditorHeader
@@ -297,23 +341,26 @@ export class CodeEditorComponent extends React.Component<Pick<Props, any>, State
 					</NextKataMessage>
 				}
 			</TabBarContainer>
-			<div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-				<SectionTitle>Solution</SectionTitle>
-				<ACE
-					onChange={this.handleCodeEditorValue}
-					value={currentValue}
-					width={"auto"}
-				/>
-				<Button
-					active
-					fullWidth
-					onClick={
-						() => this.launchWorker({code: currentValue, kata: katas[currentKataIndex]}, this.testWorker)
-					}
-				>
-					RUN CODE (CTRL + Enter)
-				</Button>
-			</div>
+			{
+				!isSmallWindow &&
+				<div style={{ flex: 2, display: "flex", flexDirection: "column" }}>
+					<SectionTitle>Editor</SectionTitle>
+					<ACE
+						onChange={this.handleCodeEditorValue}
+						value={currentValue}
+						width={"auto"}
+						/>
+					<Button
+						active
+						fullWidth
+						onClick={
+							() => this.launchWorker({code: currentValue, kata: katas[currentKataIndex]}, this.testWorker)
+						}
+						>
+						RUN CODE (CTRL + Enter)
+					</Button>
+				</div>
+			}
 			</main>
 
 			<Portal
@@ -379,7 +426,7 @@ const LinkStyled = {...GlobalStyle.linkButton,
 };
 
 const TabBarContainer = styled.div`
-	flex: 0.6;
+	flex: 1;
 	display: flex;
 	position: relative;
 	flex-direction: column;
