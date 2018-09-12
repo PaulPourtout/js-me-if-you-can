@@ -23,7 +23,6 @@ export default class CodeTest extends React.Component<Props, {}> {
             <div key={index}>
               <p style={{ color: "#FFF" }}> =========== </p>
               <p style={{ color }}> $ arguments : {result.arg}</p>
-              <p style={{ color }}> $ result : {result.actual}</p>
               <p style={{ color }}> $ {result.message}</p>
             </div>
           );

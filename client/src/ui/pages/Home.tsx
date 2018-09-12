@@ -47,7 +47,7 @@ export class HomeComponent extends React.Component<Props, State> {
     render () {
         if (this.props.user.authenticated) return <Redirect to="/dashboard" />
         return (
-            <div>
+            <div style={{backgroundColor: ColorPalette.underBackground, minHeight: "100vh"}}>
                 <HomeHeader>
                     <div style={{padding: '1rem'}}>
                         <Nav>
@@ -193,8 +193,12 @@ const HomeHeader = styled.div`
         rgba(0, 0, 0, 0) 80%
     );
     background-color: ${ColorPalette.primary};
-    height: 90vh;
+    height: 50vh;
     position: relative;
+
+    @media (max-width: 600px) {
+        height: 100vh;
+    }
 `;
 
 interface ITitle {
